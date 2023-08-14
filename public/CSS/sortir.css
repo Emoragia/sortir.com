@@ -144,9 +144,12 @@
     width: 15%;
     height: 60px;
     background-color: blue;
+    border-radius: 10px;
     color: white;
 }
 
 .btn_create_sortie input[type=submit]:hover{
     background-color: rgb(8, 8, 189);
 }
+
+
