@@ -16,7 +16,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private ?int $idParticipant = null;
 
     #[ORM\Column(length: 180, unique: true)]
     private ?string $username = null;
@@ -53,7 +53,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getId(): ?int
     {
-        return $this->id;
+        return $this->idParticipant;
     }
 
     public function getUsername(): ?string
