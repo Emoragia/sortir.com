@@ -13,7 +13,11 @@
             You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
         </div>
     {% endif %}
-    <div class="container">
+    <div class="navbar">
+    <img src="{{ asset('images/logo.webp') }}">
+    </div>
+    <div class="container_form_position">
+        <div class="container_form_login">
             <h1 class="h3 mb-3 font-weight-normal">Connexion</h1>
             <label for="inputUsername">Identifiant</label>
             <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" autocomplete="username" required autofocus>
@@ -24,14 +28,17 @@
                 value="{{ csrf_token('authenticate') }}"
             >
 
-            <button class="btn btn-lg btn-primary" type="submit">
+            <button class="btn_connexion_submit" type="submit">
                 Connexion
             </button>
-            <label>
+            <div class="form_end_login">
+                <label>
                 <input type="checkbox" name="_remember_me" checked>
                 Ce souvenir de moi
-            </label>
-            <a href="">Mot de passe oublié</a>
+                </label>
+                <a href="">Mot de passe oublié</a>
+            </div>
+        </div>
     </div>
 </form>
 {% endblock %}
