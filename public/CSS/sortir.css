@@ -34,3 +34,80 @@
     flex-direction: column;
     right: 630px;
 }
+
+.navbar-nav{
+    display: flex;
+    width: 97%;
+    justify-content: flex-end;
+}
+
+.container_participant_accueil{
+    display: flex;
+    flex-direction: column;
+    width: 96%;
+    align-items: flex-end;
+    font-weight: bolder;
+}
+
+.container_filter_accueil{
+    width: 100%;
+    width: 31%;
+    margin-left: 2%;
+}
+
+.container_filter_category{
+    display: flex;
+    gap: 5%;
+}
+
+.category_filter_acceuil{
+    height: 10%;
+}
+
+.container_search_accueil{
+    display: flex;
+    gap: 2%;
+}
+
+.container_date_accueil{
+    display: flex;
+    gap: 1%;
+}
+
+.date{
+    height: 25px;
+}
+
+.container_checkbox_accueil{
+    margin-top: 15%;
+}
+
+.two_container{
+    display: flex;
+}
+
+.second_container_filter_accueil{
+    display: flex;
+}
+
+.container_submit_acceuil input[type=submit]{
+    position: absolute;
+    width: 15%;
+    height: 15%;
+    top: 30%;
+    right: 30%;
+    border-radius: 10px;
+    background-color: blue;
+    color: white;
+}
+
+.container_submit_acceuil input[type=submit]:hover{
+    background-color: rgb(8, 8, 189);
+}
+
+.tableau_container{
+    background-color: #80808040;
+    width: 95%;
+    height: 300px;
+    margin-left: 2%;
+}
