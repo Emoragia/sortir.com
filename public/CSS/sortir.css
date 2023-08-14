@@ -30,7 +30,7 @@
 .form_end_login{
     display: flex;
     position: absolute;
-    bottom: 270px;
+    bottom: 230px;
     flex-direction: column;
     right: 630px;
 }
