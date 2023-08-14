@@ -51,6 +51,8 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $photo = null;
 
+    private ?string $motPasseClair = null;
+
     public function getId(): ?int
     {
         return $this->idParticipant;
@@ -85,7 +87,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        $roles[] = 'ROLE_PARTICIPANT';
 
         return array_unique($roles);
     }
@@ -118,7 +120,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+         $this->motPasseClair = null;
     }
 
     public function getNom(): ?string
@@ -201,6 +203,18 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPhoto(?string $photo): static
     {
         $this->photo = $photo;
+
+        return $this;
+    }
+
+    public function getMotPasseClair(): ?string
+    {
+        return $this->motPasseClair;
+    }
+
+    public function setMotPasseClair(?string $motPasseClair): static
+    {
+        $this->motPasseClair = $motPasseClair;
 
         return $this;
     }
