@@ -152,4 +152,7 @@
     background-color: rgb(8, 8, 189);
 }
 
-
+.container_annuler_title{
+    display: flex;
+    justify-content: center;
+}
