@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ProfilController extends AbstractController
 {
-    #[Route('/profil/modifier', name: 'profil_modifier', methods: 'POST')]
+    #[Route('/profil/modifier', name: 'profil_modifier', methods: ['GET','POST'])]
     public function modifierProfil(): Response
     {
         $profil = new Participant();
