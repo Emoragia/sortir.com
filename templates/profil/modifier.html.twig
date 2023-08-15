@@ -24,46 +24,9 @@
     </div>
   </div>
 </nav>
-
-<div class="Title_Profil">
-<h3>Pseudo<h3>
-</div>
-
-<form style="margin-left: 42%;margin-top: 4%;width: 55%;">
-  <div class="form-group row">
-    <label for="staticEmail" class="col-sm-2 col-form-label">Prénom</label>
-    <div class="col-sm-10">
-      <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="Alex">
-    </div>
-  </div>
-  <div class="form-group row">
-    <label for="staticEmail" class="col-sm-2 col-form-label">Nom</label>
-    <div class="col-sm-10">
-      <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="Alexeuh">
-    </div>
-  </div>
-    <div class="form-group row">
-    <label for="staticEmail" class="col-sm-2 col-form-label">Téléphone</label>
-    <div class="col-sm-10">
-      <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="0699545487">
-    </div>
-  </div>
-    <div class="form-group row">
-    <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
-    <div class="col-sm-10">
-      <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="email@example.com">
-    </div>
-  </div>
-    <div class="form-group row">
-    <label for="staticEmail" class="col-sm-2 col-form-label">Campus</label>
-    <div class="col-sm-10">
-      <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="Nantes">
-    </div>
-  </div>
-    <button type="button" class="btn btn-primary">Retour</button>
-</form>
+<h2 class="Title_Profil">{{ profilForm.username.vars.value }}</h2>
 {{ form_start(profilForm) }}
   {{ form_widget(profilForm) }}
-  <button>Enrgistrer</button>
+  <button id="btn-title-profil" type="button" class="btn btn-primary">Enregistrer</button>
   {{ form_end(profilForm) }}
 {% endblock %}
