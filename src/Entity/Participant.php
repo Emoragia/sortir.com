@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ParticipantRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use http\Message;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -17,7 +19,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(name: 'id')]
     private ?int $idParticipant = null;
     #[Assert\Regex('/^\w+$/')]
     #[Assert\Length(
@@ -80,12 +82,28 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $photo = null;
 
     #[Assert\Regex('/^[\w\W]{4,}/',
-    message: 'Format invalide (caractères alpahnumériques ou spéciaux)')]
+    message: 'Format invalide (Utilisez des caractères alpahnumériques ou spéciaux)')]
     #[Assert\Length(
         min: 4,
         minMessage: 'Votre mot de passe doit contenir au moins 4 caractères.'
     )]
     private ?string $motPasseClair = null;
+
+    #[ORM\ManyToOne(inversedBy: 'participants')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Campus $campus = null;
+
+    #[ORM\OneToMany(mappedBy: 'organisateur', targetEntity: Sortie::class, orphanRemoval: true)]
+    private Collection $sortiesOrganisees;
+
+    #[ORM\ManyToMany(targetEntity: Sortie::class, inversedBy: 'participants')]
+    private Collection $sortiesSuivies;
+
+    public function __construct()
+    {
+        $this->sortiesOrganisees = new ArrayCollection();
+        $this->sortiesSuivies = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -249,6 +267,72 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     public function setMotPasseClair(?string $motPasseClair): static
     {
         $this->motPasseClair = $motPasseClair;
+
+        return $this;
+    }
+
+    public function getCampus(): ?Campus
+    {
+        return $this->campus;
+    }
+
+    public function setCampus(?Campus $campus): static
+    {
+        $this->campus = $campus;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Sortie>
+     */
+    public function getSortiesOrganisees(): Collection
+    {
+        return $this->sortiesOrganisees;
+    }
+
+    public function addSortiesOrganisee(Sortie $sortiesOrganisee): static
+    {
+        if (!$this->sortiesOrganisees->contains($sortiesOrganisee)) {
+            $this->sortiesOrganisees->add($sortiesOrganisee);
+            $sortiesOrganisee->setOrganisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSortiesOrganisee(Sortie $sortiesOrganisee): static
+    {
+        if ($this->sortiesOrganisees->removeElement($sortiesOrganisee)) {
+            // set the owning side to null (unless already changed)
+            if ($sortiesOrganisee->getOrganisateur() === $this) {
+                $sortiesOrganisee->setOrganisateur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Sortie>
+     */
+    public function getSortiesSuivies(): Collection
+    {
+        return $this->sortiesSuivies;
+    }
+
+    public function addSortiesSuivy(Sortie $sortiesSuivy): static
+    {
+        if (!$this->sortiesSuivies->contains($sortiesSuivy)) {
+            $this->sortiesSuivies->add($sortiesSuivy);
+        }
+
+        return $this;
+    }
+
+    public function removeSortiesSuivy(Sortie $sortiesSuivy): static
+    {
+        $this->sortiesSuivies->removeElement($sortiesSuivy);
 
         return $this;
     }

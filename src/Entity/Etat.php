@@ -10,7 +10,7 @@ class Etat
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(name: 'id')]
     private ?int $idEtat = null;
 
     #[ORM\Column(length: 20)]
