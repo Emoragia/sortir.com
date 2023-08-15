@@ -54,9 +54,11 @@ class ProfilType extends AbstractType
                 ],
                 'second_options' => ['label' => 'Confirmation du mot de passe : '],
             ])
-            ->add('campus', TextType::class, [
-                'label'=> 'Campus',
-                'disabled'=>true
+            ->add('campus', EntityType::class, [
+                'class' => Campus::class, // Remplacez Campus::class par le nom de votre classe d'entité Campus
+                'label' => 'Campus',
+                'disabled' => true,
+                'choice_label' => 'nom', // Remplacez "nom" par le champ que vous souhaitez afficher
             ])
 //            ->add('photo')
         ;
