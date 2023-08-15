@@ -29,7 +29,6 @@
 
 .form_end_login{
     display: flex;
-    position: absolute;
     flex-direction: row;
 }
 
@@ -164,4 +163,10 @@
 .Title_Profil{
     display: flex;
     justify-content: center;
+}
+
+.Formulaireannuler{
+    width: 50%;
+    margin-left: 30%;
+    margin-top: 5%;
 }

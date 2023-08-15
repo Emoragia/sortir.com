@@ -27,7 +27,7 @@ class SortieController extends AbstractController
     public function supprimerSortie(){
         //TODO : renvoi vers la page d'accueil
     }
-    #[Route('/sorties/annuler', name: 'sortie_annuler', methods: ['POST', 'PATCH'])]
+    #[Route('/sorties/annuler', name: 'sortie_annuler', methods: ['GET','POST', 'PATCH'])]
     public function annulerSortie(): Response
     {
         return $this->render('sortie/annuler.html.twig');
