@@ -30,9 +30,7 @@
 .form_end_login{
     display: flex;
     position: absolute;
-    bottom: 230px;
-    flex-direction: column;
-    right: 630px;
+    flex-direction: row;
 }
 
 .navbar-nav{
