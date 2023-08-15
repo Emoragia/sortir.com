@@ -11,7 +11,7 @@ class AnnulerSortieController extends AbstractController
     #[Route('/annuler/sortie', name: 'app_annuler_sortie')]
     public function index(): Response
     {
-        return $this->render('annuler_sortie/Sortie.html.twig', [
+        return $this->render('sortie/sortie.html.twig', [
             'controller_name' => 'AnnulerSortieController',
         ]);
     }
