@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Participant;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -21,14 +22,12 @@ class ProfilType extends AbstractType
             ->add('nom')
             ->add('telephone')
             ->add('email')
-            ->add('motPasseClair', PasswordType::class, [
-                'attr' => ['autocomplete'=>'nouveau mot de passe'],
-                'label' => 'Mot de passe'
-            ])
-            ->add('confirmationMotPasseS', PasswordType::class, [
-                'mapped' => false,
-                'attr' => ['autocomplete'=>'confirmation mot de passe'],
-                'label' => 'Confirmation'
+            ->add('motPasseClair', RepeatedType::class, [
+                'type'=> PasswordType::class,
+                'invalid_message' => 'Les mots de passe saisis ne correspondent pas.',
+                'required'=>false,
+                'first_options' => ['label' => 'Nouveau mot de passe'],
+                'second_options' => ['label' => 'Confirmation du mot de passe'],
             ])
 //            ->add('campus', TextType::class, [
 //                'label'=> 'Campus'

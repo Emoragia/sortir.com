@@ -25,9 +25,11 @@ class ProfilController extends BaseController
         $profilForm = $this->createForm(ProfilType::class, $participant);
         $profilForm->handleRequest($request);
         if($profilForm->isSubmitted() && $profilForm->isValid()){
-           $participant->setPassword(
-               $hasher->hashPassword($participant, $participant->getMotPasseClair())
-           );
+            if($participant->getMotPasseClair()){
+                $participant->setPassword(
+                    $hasher->hashPassword($participant, $participant->getMotPasseClair())
+                );
+            }
            $entityManager->persist($participant);
            $entityManager->flush();
 
