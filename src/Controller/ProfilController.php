@@ -21,6 +21,8 @@ class ProfilController extends BaseController
         $participant = $this->getUser();
 
         $profilForm = $this->createForm(ProfilType::class, $participant);
+        $profilForm->handleRequest($request);
+
         return $this->render('profil/modifier.html.twig', [
             'profilForm' => $profilForm->createView()
         ]);
