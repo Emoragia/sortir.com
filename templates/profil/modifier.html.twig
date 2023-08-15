@@ -62,5 +62,9 @@
   </div>
     <button type="button" class="btn btn-primary">Retour</button>
 </form>
-
+{{ form_start(profilForm) }}
+  {{ form_widget(profilForm) }}
+  <button>Enrgistrer</button>
+  <button>Annuler</button>
+  {{ form_end(profilForm) }}
 {% endblock %}
