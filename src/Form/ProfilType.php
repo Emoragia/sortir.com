@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Participant;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -16,14 +17,28 @@ class ProfilType extends AbstractType
     {
         $builder
             ->add('username', TextType::class, [
-                'label'=> 'Pseudo : '
+                'label'=> 'Pseudo : ',
+                'required'=> true,
             ])
-            ->add('prenom')
-            ->add('nom')
-            ->add('telephone')
-            ->add('email')
+            ->add('prenom', TextType::class, [
+                'label'=>'Prénom : ',
+                'required'=>true,
+            ])
+            ->add('nom', TextType::class, [
+                'label'=>'Nom : ',
+                'required'=>true,
+            ])
+            ->add('telephone', TextType::class, [
+                'label'=>'Téléphone : ',
+                'required'=>false,
+            ])
+            ->add('email', EmailType::class, [
+                'label'=>"Email : ",
+                'required'=>true,
+            ])
             ->add('motPasseClair', RepeatedType::class, [
                 'type'=> PasswordType::class,
+                'trim'=>true,
                 'invalid_message' => 'Les mots de passe saisis ne correspondent pas.',
                 'required'=>false,
                 'first_options' => ['label' => 'Nouveau mot de passe'],

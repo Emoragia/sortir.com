@@ -4,9 +4,11 @@ namespace App\Entity;
 
 use App\Repository\ParticipantRepository;
 use Doctrine\ORM\Mapping as ORM;
+use http\Message;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ParticipantRepository::class)]
 #[UniqueEntity(fields: 'email',message: "Un compte est déjà associé à cet email")]
@@ -17,7 +19,14 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $idParticipant = null;
-
+    #[Assert\Regex('/^\w+$/')]
+    #[Assert\Length(
+        min: 6,
+        max: 30,
+        minMessage: 'Votre pseudo doit contenir au moins 6 caractères alphanumériques',
+        maxMessage: 'Votre pseudo ne peut pas contenir plus de 30 caractères.'
+    )]
+    #[Assert\NotBlank(message: 'N\'oubliez pas saisir votre pseudo !')]
     #[ORM\Column(length: 180, unique: true)]
     private ?string $username = null;
 
@@ -30,15 +39,34 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+    #[Assert\Regex('/^\w+$/')]
+    #[Assert\Length(
+        min: 6,
+        max: 50,
+        minMessage: 'Votre nom doit contenir au moins 6 caractères alphanumériques',
+        maxMessage: 'Votre nom ne peut pas contenir plus de 50 caractères.'
+    )]
+    #[Assert\NotBlank(message: 'N\'oubliez pas saisir votre nom !')]
     #[ORM\Column(length: 50)]
     private ?string $nom = null;
 
+    #[Assert\Regex('/^\w+$/')]
+    #[Assert\Length(
+        min:3,
+        max: 30,
+        minMessage: 'Votre prénom doit contenir au moins 3 caractères alphanumériques',
+        maxMessage: 'Votre nom ne peut pas contenir plus de 30 caractères.'
+    )]
+    #[Assert\NotBlank(message: 'N\'oubliez pas saisir votre prénom !')]
     #[ORM\Column(length: 30)]
     private ?string $prenom = null;
 
+    #[Assert\Regex('/^(0\d)(\d{2}){4}/', message: 'Format invalide (ex.: 0687955463')]
     #[ORM\Column(length: 20, nullable: true)]
     private ?string $telephone = null;
 
+    #[Assert\Regex('/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$/',
+    message: 'Format d\'adresse mail invalide. (ex.: test@mail.com)')]
     #[ORM\Column(length: 80, unique: true)]
     private ?string $email = null;
 
@@ -51,6 +79,12 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $photo = null;
 
+    #[Assert\Regex('/^[\w\W]{4,}/',
+    message: 'Format invalide (caractères alpahnumériques ou spéciaux)')]
+    #[Assert\Length(
+        min: 4,
+        minMessage: 'Votre mot de passe doit contenir au moins 4 caractères.'
+    )]
     private ?string $motPasseClair = null;
 
     public function getId(): ?int
