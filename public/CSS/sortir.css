@@ -154,3 +154,14 @@
     display: flex;
     justify-content: center;
 }
+
+.FormProfilDetails{
+    width: 50%;
+    margin-left: 30%;
+    margin-top: 5%;
+}
+
+.Title_Profil{
+    display: flex;
+    justify-content: center;
+}
