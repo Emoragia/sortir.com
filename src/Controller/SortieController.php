@@ -15,17 +15,17 @@ class SortieController extends AbstractController
     }
     #[Route('/sorties/details/{id}', name: 'sortie_details', requirements: ['id'=>'\d+'], methods: "GET")]
     public function afficherSortie(){
-
+        //TODO: renvoi vers une page details.html.twig
     }
 
     #[Route('/sorties/modifier', name: 'sortie_modifier', methods: ['GET', 'POST', 'PUT'])]
     public function modifierSortie(){
-
+        //TODO: renvoi vers une page modifier.html.twig
     }
 
     #[Route('/sorties/supprimer', name: 'sortie_supprimer', methods: ['POST, DELETE'])]
     public function supprimerSortie(){
-
+        //TODO : renvoi vers la page d'accueil
     }
     #[Route('/sorties/annuler', name: 'sortie_annuler', methods: ['POST', 'PATCH'])]
     public function annulerSortie(): Response
