@@ -21,12 +21,11 @@ class ProfilType extends AbstractType
             ->add('nom')
             ->add('telephone')
             ->add('email')
-            ->add('plainPassword', PasswordType::class, [
-                'mapped' => false,
+            ->add('motPasseClair', PasswordType::class, [
                 'attr' => ['autocomplete'=>'nouveau mot de passe'],
                 'label' => 'Mot de passe'
             ])
-            ->add('confirmPassword', PasswordType::class, [
+            ->add('confirmationMotPasseS', PasswordType::class, [
                 'mapped' => false,
                 'attr' => ['autocomplete'=>'confirmation mot de passe'],
                 'label' => 'Confirmation'
