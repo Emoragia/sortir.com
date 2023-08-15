@@ -18,7 +18,7 @@ class SortieController extends AbstractController
 
     }
 
-    #[Route('/sorties/modifier', name: 'sortie_modifier', methods: ['POST', 'PUT'])]
+    #[Route('/sorties/modifier', name: 'sortie_modifier', methods: ['GET', 'POST', 'PUT'])]
     public function modifierSortie(){
 
     }
