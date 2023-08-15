@@ -17,23 +17,28 @@ class ProfilType extends AbstractType
     {
         $builder
             ->add('username', TextType::class, [
-                'label'=> 'Pseudo : ',
+                'label'=> 'Pseudo :',
+                'label_attr' => ['class' => 'pseudo-label'],
                 'required'=> true,
             ])
             ->add('prenom', TextType::class, [
                 'label'=>'Prénom : ',
+                'label_attr' => ['class' => 'prenom-label'],
                 'required'=>true,
             ])
             ->add('nom', TextType::class, [
                 'label'=>'Nom : ',
+                'label_attr' => ['class' => 'nom-label'],
                 'required'=>true,
             ])
             ->add('telephone', TextType::class, [
                 'label'=>'Téléphone : ',
+                'label_attr' => ['class' => 'telephone-label'],
                 'required'=>false,
             ])
             ->add('email', EmailType::class, [
                 'label'=>"Email : ",
+                'label_attr' => ['class' => 'email-label'],
                 'required'=>true,
             ])
             ->add('motPasseClair', RepeatedType::class, [
@@ -41,8 +46,11 @@ class ProfilType extends AbstractType
                 'trim'=>true,
                 'invalid_message' => 'Les mots de passe saisis ne correspondent pas.',
                 'required'=>false,
-                'first_options' => ['label' => 'Nouveau mot de passe'],
-                'second_options' => ['label' => 'Confirmation du mot de passe'],
+                'first_options' => [
+                    'label' => '<span class="first-password-label">Nouveau mot de passe :</span> ',
+                    'label_html' => true,
+                ],
+                'second_options' => ['label' => 'Confirmation du mot de passe : '],
             ])
 //            ->add('campus', TextType::class, [
 //                'label'=> 'Campus'

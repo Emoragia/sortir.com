@@ -170,3 +170,43 @@
     margin-left: 30%;
     margin-top: 5%;
 }
+
+#profil{
+    margin-left: 40%;
+    margin-top: 5%;
+}
+
+#btn-title-profil{
+    margin-left: 47%;
+    margin-top: 2%;
+}
+
+.pseudo-label {
+    margin-right: 163px; 
+    margin-bottom: 2%;
+}
+
+.prenom-label{
+    margin-right: 160px;
+    margin-bottom: 2%;
+}
+
+.nom-label{
+    margin-right: 180px;
+    margin-bottom: 2%;
+}
+
+.telephone-label{
+    margin-right: 142px;
+    margin-bottom: 2%;
+}
+
+.email-label{
+    margin-right: 177px;
+    margin-bottom: 2%;
+}
+
+.first-password-label{
+    margin-right: 52px;
+    margin-bottom: 2%;
+}
