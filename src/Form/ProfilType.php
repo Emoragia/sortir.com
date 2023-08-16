@@ -54,6 +54,7 @@ class ProfilType extends AbstractType
                 ],
                 'second_options' => ['label' => 'Confirmation du mot de passe : '],
             ])
+//            Ajouter une classe StringToCampusTransformer si besoin d'activer le champ.
             ->add('campus', TextType::class, [
                 'label'=> 'Campus',
                 'disabled'=>true
