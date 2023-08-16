@@ -3,6 +3,7 @@
 namespace App\Factory;
 
 use App\Entity\Participant;
+use App\Repository\CampusRepository;
 use App\Repository\ParticipantRepository;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Zenstruck\Foundry\ModelFactory;
@@ -37,10 +38,12 @@ final class ParticipantFactory extends ModelFactory
      *
      */
     protected UserPasswordHasherInterface $hasher;
-    public function __construct(UserPasswordHasherInterface $hasher)
+    protected $campus;
+    public function __construct(UserPasswordHasherInterface $hasher, CampusRepository $campusRepository)
     {
         parent::__construct();
         $this->hasher = $hasher;
+        $this->campus= $campusRepository->findAll();
     }
 
     /**
@@ -56,10 +59,11 @@ final class ParticipantFactory extends ModelFactory
             'administrateur' => false,
             'email' => self::faker()->email(),
             'nom' => self::faker()->lastName(),
-            'motPasseClair' => 'poney',
+            'motPasse' => 'poney',
             'prenom' => $nb==0 ? self::faker()->unique()->firstNameFemale() : self::faker()->unique()->firstNameMale(),
             'roles' => ['ROLE_PARTICIPANT'],
             'username' => self::faker()->word(),
+            'campus' => self::faker()->randomElement($this->campus)
         ];
     }
 
@@ -70,9 +74,9 @@ final class ParticipantFactory extends ModelFactory
     {
         return $this
              ->afterInstantiate(function(Participant $participant): void {
-                 if($participant->getMotPasseClair()){
-                     $participant->setPassword(
-                         $this->hasher->hashPassword($participant, $participant->getMotPasseClair())
+                 if($participant->getMotPasse()){
+                     $participant->setMotPasse(
+                         $this->hasher->hashPassword($participant, $participant->getMotPasse())
                      );
                  }
              })

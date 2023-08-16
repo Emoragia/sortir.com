@@ -36,7 +36,7 @@ class ParticipantRepository extends ServiceEntityRepository implements PasswordU
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', $user::class));
         }
 
-        $user->setPassword($newHashedPassword);
+        $user->setMotPasse($newHashedPassword);
         $this->getEntityManager()->persist($user);
         $this->getEntityManager()->flush();
     }
@@ -73,7 +73,7 @@ class ParticipantRepository extends ServiceEntityRepository implements PasswordU
         return $entityManager->createQuery(
             'SELECT p
                 FROM App\Entity\Participant p
-                WHERE p.username = :query
+                WHERE p.pseudo = :query
                 OR p.email = :query'
         )
             ->setParameter('query', $identifier)

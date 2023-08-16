@@ -18,7 +18,7 @@ class ProfilType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('username', TextType::class, [
+            ->add('pseudo', TextType::class, [
                 'label'=> 'Pseudo :',
                 'label_attr' => ['class' => 'pseudo-label'],
                 'required'=> true,
@@ -43,7 +43,7 @@ class ProfilType extends AbstractType
                 'label_attr' => ['class' => 'email-label'],
                 'required'=>true,
             ])
-            ->add('motPasseClair', RepeatedType::class, [
+            ->add('motPasse', RepeatedType::class, [
                 'type'=> PasswordType::class,
                 'trim'=>true,
                 'invalid_message' => 'Les mots de passe saisis ne correspondent pas.',
@@ -55,6 +55,7 @@ class ProfilType extends AbstractType
                 'second_options' => ['label' => 'Confirmation du mot de passe : '],
             ])
 //            Ajouter une classe StringToCampusTransformer si besoin d'activer le champ.
+                //ou créer un champ non mappé + getCampus->getNom avec $data réucpérer objet Camous en option
             ->add('campus', TextType::class, [
                 'label'=> 'Campus',
                 'disabled'=>true

@@ -6,7 +6,10 @@ use App\Repository\CampusRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-//TODO: peut-être unicité sur champ nom ?
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
+
+#[UniqueEntity(fields: 'nom',message: "Il y'a déjà un campus portant ce nom.")]
 #[ORM\Entity(repositoryClass: CampusRepository::class)]
 class Campus
 {
@@ -15,7 +18,9 @@ class Campus
     #[ORM\Column(name: 'id')]
     private ?int $idCampus = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 50, unique : true)]
+    #[Assert\Regex('/^[a-zA-Z-]+$/')]
+    #[Assert\NotBlank(message: 'Le nom du campus doit obligatoirement être renseigné.')]
     private ?string $nom = null;
 
     #[ORM\OneToMany(mappedBy: 'campus', targetEntity: Participant::class)]

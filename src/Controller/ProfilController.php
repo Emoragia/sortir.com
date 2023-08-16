@@ -20,14 +20,15 @@ class ProfilController extends BaseController
         UserPasswordHasherInterface $hasher
     ): Response
     {
+        /** @var Participant $participant */
         $participant = $this->getUser();
 
         $profilForm = $this->createForm(ProfilType::class, $participant);
         $profilForm->handleRequest($request);
         if($profilForm->isSubmitted() && $profilForm->isValid()){
-            if($participant->getMotPasseClair()){
-                $participant->setPassword(
-                    $hasher->hashPassword($participant, $participant->getMotPasseClair())
+            if($participant->getMotPasse()){
+                $participant->setMotPasse(
+                    $hasher->hashPassword($participant, $participant->getMotPasse())
                 );
             }
            $entityManager->persist($participant);

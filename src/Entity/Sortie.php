@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\This;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SortieRepository::class)]
 class Sortie
@@ -16,21 +18,45 @@ class Sortie
     #[ORM\Column(name: 'id')]
     private ?int $idSortie = null;
 
+    #[Assert\Regex('/^\w+$/')]
+    #[Assert\Length(
+        min: 10,
+        max: 80,
+        minMessage: 'Le nom doit contenir au moins 6 caractères alphanumériques',
+        maxMessage: 'le nom ne peut pas contenir plus de 80 caractères.'
+    )]
+    #[Assert\NotBlank(message: 'Veuillez saisir un nom pour votre sortie s\'il vous plaît.')]
     #[ORM\Column(length: 80)]
     private ?string $nom = null;
 
+//    #[Assert\DateTime()]
+    #[Assert\NotBlank(message: 'Veuillez renseignez la date de la sortie.')]
+    #[Assert\GreaterThan('today')]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateHeureDebut = null;
 
+
+    #[Assert\Positive(message: 'La durée doit être un nombre entier positif et supérieur à 0.')]
     #[ORM\Column]
     private ?int $duree = null;
 
+    #[Assert\GreaterThan(propertyPath: 'dateHeureDebut')]
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $dateLimiteInscription = null;
 
+    #[Assert\Regex('/^[1-9]{1}\d?$/',
+    message: 'Le nombres de participant.e.s doit être compris entre 1 et 99')]
     #[ORM\Column]
     private ?int $nbInscriptionsMax = null;
 
+    #[Assert\Regex('/^\w+$/')]
+    #[Assert\Length(
+        min: 10,
+        max: 255,
+        minMessage: 'La description doit contenir au moins 20 caractères alphanumériques',
+        maxMessage: 'la description ne peut pas contenir plus de 255 caractères.'
+    )]
+    #[Assert\NotBlank(message: 'Veuillez saisir un nom pour votre sortie s\'il vous plaît.')]
     #[ORM\Column(type: Types::TEXT)]
     private ?string $infosSortie = null;
 
@@ -147,7 +173,7 @@ class Sortie
     {
         if (!$this->participants->contains($participant)) {
             $this->participants->add($participant);
-            $participant->addSortiesSuivy($this);
+            $participant->addSortiesSuivies($this);
         }
 
         return $this;
@@ -156,7 +182,7 @@ class Sortie
     public function removeParticipant(Participant $participant): static
     {
         if ($this->participants->removeElement($participant)) {
-            $participant->removeSortiesSuivy($this);
+            $participant->removeSortiesSuivies($this);
         }
 
         return $this;

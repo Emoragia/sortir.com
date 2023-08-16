@@ -18,16 +18,16 @@ class SortieController extends AbstractController
         //TODO: renvoi vers une page details.html.twig
     }
 
-    #[Route('/sorties/modifier', name: 'sortie_modifier', methods: ['GET', 'POST', 'PUT'])]
+    #[Route('/sorties/modifier', name: 'sortie_modifier', methods: ['GET', 'POST'])]
     public function modifierSortie(){
         //TODO: renvoi vers une page modifier.html.twig
     }
 
-    #[Route('/sorties/supprimer', name: 'sortie_supprimer', methods: ['POST, DELETE'])]
+    #[Route('/sorties/supprimer', name: 'sortie_supprimer', methods: ['GET, DELETE'])]
     public function supprimerSortie(){
         //TODO : renvoi vers la page d'accueil
     }
-    #[Route('/sorties/annuler', name: 'sortie_annuler', methods: ['GET','POST', 'PATCH'])]
+    #[Route('/sorties/annuler', name: 'sortie_annuler', methods: ['GET','POST'])]
     public function annulerSortie(): Response
     {
         return $this->render('sortie/annuler.html.twig');

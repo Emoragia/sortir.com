@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ParticipantRepository::class)]
 #[UniqueEntity(fields: 'email',message: "Un compte est déjà associé à cet email")]
-#[UniqueEntity(fields: 'username',message: "Ce pseudo est déjà utilisé par un compte")]
+#[UniqueEntity(fields: 'pseudo',message: "Ce pseudo est déjà utilisé par un compte")]
 class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -30,16 +30,19 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     )]
     #[Assert\NotBlank(message: 'N\'oubliez pas saisir votre pseudo !')]
     #[ORM\Column(length: 180, unique: true)]
-    private ?string $username = null;
-
-    #[ORM\Column]
-    private array $roles = [];
+    private ?string $pseudo = null;
 
     /**
      * @var string The hashed password
      */
+    #[Assert\Regex('/^[\w\W]{4,}/',
+        message: 'Format invalide (Utilisez des caractères alpahnumériques ou spéciaux)')]
+    #[Assert\Length(
+        min: 4,
+        minMessage: 'Votre mot de passe doit contenir au moins 4 caractères.'
+    )]
     #[ORM\Column]
-    private ?string $password = null;
+    private ?string $motPasse = null;
 
     #[Assert\Regex('/^\w+$/')]
     #[Assert\Length(
@@ -67,8 +70,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 20, nullable: true)]
     private ?string $telephone = null;
 
-    #[Assert\Regex('/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$/',
-    message: 'Format d\'adresse mail invalide. (ex.: test@mail.com)')]
+    #[Assert\Email(message: 'Format d\'adresse mail invalide. (ex.: test@mail.com)')]
     #[ORM\Column(length: 80, unique: true)]
     private ?string $email = null;
 
@@ -80,14 +82,6 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $photo = null;
-
-    #[Assert\Regex('/^[\w\W]{4,}/',
-    message: 'Format invalide (Utilisez des caractères alpahnumériques ou spéciaux)')]
-    #[Assert\Length(
-        min: 4,
-        minMessage: 'Votre mot de passe doit contenir au moins 4 caractères.'
-    )]
-    private ?string $motPasseClair = null;
 
     #[ORM\ManyToOne(inversedBy: 'participants')]
     #[ORM\JoinColumn(nullable: false)]
@@ -110,14 +104,14 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->idParticipant;
     }
 
-    public function getUsername(): ?string
+    public function getPseudo(): ?string
     {
-        return $this->username;
+        return $this->pseudo;
     }
 
-    public function setUsername(string $username): static
+    public function setPseudo(string $pseudo): static
     {
-        $this->username = $username;
+        $this->pseudo = $pseudo;
 
         return $this;
     }
@@ -129,7 +123,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->username;
+        return (string) $this->pseudo;
     }
 
     /**
@@ -137,18 +131,14 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_PARTICIPANT';
-
+        $roles[]=[];
+        if($this->administrateur){
+            $roles=['ROLE_ADMIN'];
+        }
+        else{
+            $roles=['ROLE_PARTICIPANT'];
+        }
         return array_unique($roles);
-    }
-
-    public function setRoles(array $roles): static
-    {
-        $this->roles = $roles;
-
-        return $this;
     }
 
     /**
@@ -156,14 +146,16 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getPassword(): string
     {
-        return $this->password;
+        return $this->motPasse;
     }
-
-    public function setPassword(string $password): static
+    public function setMotPasse(string $motPasse): string
     {
-        $this->password = $password;
-
-        return $this;
+        $this->motPasse = $motPasse;
+        return $this->motPasse;
+    }
+    public function getMotPasse(): string
+    {
+        return $this->motPasse;
     }
 
     /**
@@ -172,7 +164,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
-         $this->motPasseClair = null;
+//         $this->motPasseClair = null;
     }
 
     public function getNom(): ?string
@@ -259,18 +251,6 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getMotPasseClair(): ?string
-    {
-        return $this->motPasseClair;
-    }
-
-    public function setMotPasseClair(?string $motPasseClair): static
-    {
-        $this->motPasseClair = $motPasseClair;
-
-        return $this;
-    }
-
     public function getCampus(): ?Campus
     {
         return $this->campus;
@@ -321,18 +301,18 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->sortiesSuivies;
     }
 
-    public function addSortiesSuivy(Sortie $sortiesSuivy): static
+    public function addSortiesSuivies(Sortie $sortiesSuivies): static
     {
-        if (!$this->sortiesSuivies->contains($sortiesSuivy)) {
-            $this->sortiesSuivies->add($sortiesSuivy);
+        if (!$this->sortiesSuivies->contains($sortiesSuivies)) {
+            $this->sortiesSuivies->add($sortiesSuivies);
         }
 
         return $this;
     }
 
-    public function removeSortiesSuivy(Sortie $sortiesSuivy): static
+    public function removeSortiesSuivies(Sortie $sortiesSuivies): static
     {
-        $this->sortiesSuivies->removeElement($sortiesSuivy);
+        $this->sortiesSuivies->removeElement($sortiesSuivies);
 
         return $this;
     }
