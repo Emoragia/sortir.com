@@ -24,9 +24,13 @@
     </div>
   </div>
 </nav>
+
 <h2 class="Title_Profil">{{ profilForm.username.vars.value }}</h2>
-{{ form_start(profilForm) }}
-  {{ form_widget(profilForm) }}
-  <button id="btn-title-profil" type="button" class="btn btn-primary">Enregistrer</button>
-  {{ form_end(profilForm) }}
+    {{ form_start(profilForm) }}
+      {{ form_widget(profilForm) }}
+      <button id="btn-title-profil" type="submit" class="btn btn-primary">Enregistrer</button>
+      {{ form_end(profilForm) }}
+
+
+
 {% endblock %}
