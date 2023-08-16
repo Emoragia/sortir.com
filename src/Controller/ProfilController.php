@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use function PHPUnit\Framework\isEmpty;
 
 class ProfilController extends BaseController
 {
@@ -27,10 +28,12 @@ class ProfilController extends BaseController
         $profilForm->handleRequest($request);
         if($profilForm->isSubmitted() && $profilForm->isValid()){
 
-            $data = $profilForm->getData();
-            $motPasseClair = $data['motPasseClair'];
-            if(!is_null($motPasseClair))
+            $motPasseClair = $profilForm['motPasseClair']->getData();
+//            dd($motPasseClair);
+            //TODO : affichage erreur si mot de passe vide
+            if(!is_null($motPasseClair) && !isEmpty(trim($motPasseClair)))
             {
+                var_dump($motPasseClair);
                 $participant->setMotPasse(
                     $hasher->hashPassword($participant, $motPasseClair)
                 );
