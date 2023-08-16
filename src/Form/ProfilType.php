@@ -43,9 +43,10 @@ class ProfilType extends AbstractType
                 'label_attr' => ['class' => 'email-label'],
                 'required'=>true,
             ])
-            ->add('motPasse', RepeatedType::class, [
+            ->add('motPasseClair', RepeatedType::class, [
                 'type'=> PasswordType::class,
                 'trim'=>true,
+                'mapped'=>false,
                 'invalid_message' => 'Les mots de passe saisis ne correspondent pas.',
                 'required'=>false,
                 'first_options' => [
@@ -68,6 +69,7 @@ class ProfilType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Participant::class,
+            "allow_extra_fields" => true,
         ]);
     }
 }

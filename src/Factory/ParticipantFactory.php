@@ -61,8 +61,7 @@ final class ParticipantFactory extends ModelFactory
             'nom' => self::faker()->lastName(),
             'motPasse' => 'poney',
             'prenom' => $nb==0 ? self::faker()->unique()->firstNameFemale() : self::faker()->unique()->firstNameMale(),
-            'roles' => ['ROLE_PARTICIPANT'],
-            'username' => self::faker()->word(),
+            'pseudo' => self::faker()->word(),
             'campus' => self::faker()->randomElement($this->campus)
         ];
     }

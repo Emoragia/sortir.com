@@ -23,7 +23,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $idParticipant = null;
     #[Assert\Regex('/^\w+$/')]
     #[Assert\Length(
-        min: 6,
+        min: 3,
         max: 30,
         minMessage: 'Votre pseudo doit contenir au moins 6 caractères alphanumériques',
         maxMessage: 'Votre pseudo ne peut pas contenir plus de 30 caractères.'
@@ -46,7 +46,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[Assert\Regex('/^\w+$/')]
     #[Assert\Length(
-        min: 6,
+        min: 3,
         max: 50,
         minMessage: 'Votre nom doit contenir au moins 6 caractères alphanumériques',
         maxMessage: 'Votre nom ne peut pas contenir plus de 50 caractères.'
