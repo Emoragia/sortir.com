@@ -23,6 +23,8 @@ class Ville
     #[ORM\Column(length: 5)]
     private ?string $codePostal = null;
 
+    //TODO: ajout champs lieux de type array
+
     public function getId(): ?int
     {
         return $this->idVille;

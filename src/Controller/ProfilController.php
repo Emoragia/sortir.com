@@ -33,10 +33,13 @@ class ProfilController extends BaseController
             //TODO : affichage erreur si mot de passe vide
             if(!is_null($motPasseClair) && !isEmpty(trim($motPasseClair)))
             {
-                var_dump($motPasseClair);
                 $participant->setMotPasse(
                     $hasher->hashPassword($participant, $motPasseClair)
                 );
+            }
+            if(isEmpty($motPasseClair)){
+                $this->addFlash('warning', 'Le mot de passe ne peut être une chaîne vide !');
+                return $this->redirectToRoute('profil_modifier');
             }
 
            $entityManager->persist($participant);

@@ -2,6 +2,8 @@
 
 namespace App\Repository;
 
+use App\Entity\Campus;
+use App\Entity\Participant;
 use App\Entity\Sortie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -21,20 +23,25 @@ class SortieRepository extends ServiceEntityRepository
         parent::__construct($registry, Sortie::class);
     }
 
-//    /**
-//     * @return Sortie[] Returns an array of Sortie objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('s')
+    /**
+     * @return Sortie[] Returns an array of Sortie objects
+     */
+    public function findSorties(Participant $participant,
+                                $campus = null,
+                                $borneDateInf = null, $borneDateSup = null,
+                                bool $organisateur = true,
+                                bool $inscrit = true,
+                                bool $nonInscrit = true,
+                                $etat=[1,2,3]): array
+    {
+        $queryBuilder = $this->createQueryBuilder('s');
 //            ->andWhere('s.exampleField = :val')
 //            ->setParameter('val', $value)
 //            ->orderBy('s.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+//            ->setMaxResults(10);
+            $query = $queryBuilder->getQuery();
+            return $query->getResult();
+    }
 
 //    public function findOneBySomeField($value): ?Sortie
 //    {
