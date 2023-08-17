@@ -18,6 +18,9 @@
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </head>
+    <header>
+        {% include('inc/nav.html.twig') %}
+    </header>
     <body>
         {% for label, messages in app.flashes %}
             {% for message in messages %}
