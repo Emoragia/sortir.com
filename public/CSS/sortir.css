@@ -135,7 +135,7 @@
     padding-top: 4px;
 }
 
-.btn_create_sortie input[type=submit]{
+button{
     margin-top: 10px;
     margin-left: 2%;
     width: 15%;
