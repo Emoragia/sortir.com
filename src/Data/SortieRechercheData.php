@@ -8,16 +8,14 @@ use App\Entity\Participant;
 
 class SortieRechercheData
 {
-    protected Participant $participant;
-    protected Campus $campus;
-    protected string $nomRecherche = '';
-    protected \DateTime $borneDateInf;
-    protected \DateTime $borneDateSup ;
-    protected bool $organisateur = true;
-    protected bool $inscrit = true;
-    protected bool $nonInscrit = true;
-    protected bool $sortiesPassées = false;
-
-
+    public Participant $participant;
+    public ?Campus $campus = null;
+    public string $nomRecherche = '';
+    public ?\DateTime $borneDateInf = null;
+    public ?\DateTime $borneDateSup = null;
+    public bool $organisateur = true;
+    public bool $inscrit = true;
+    public bool $nonInscrit = true;
+    public bool $sortiesPassees = false;
 
 }

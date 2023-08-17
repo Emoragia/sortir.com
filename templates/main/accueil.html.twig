@@ -138,6 +138,7 @@
     </div>
     {% for sortie in sorties %}
         <p>{{ sortie.nom }}</p>
+        <p>{{ sortie.etat.libelle }}</p>
     {% endfor %}
 
     <div class="btn_create_sortie">
