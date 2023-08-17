@@ -41,6 +41,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
         min: 4,
         minMessage: 'Votre mot de passe doit contenir au moins 4 caractères.'
     )]
+    #[Assert\NotBlank(message: 'Votre mot de passe ne peut pas être une chaîne de caractères vide.')]
     #[ORM\Column]
     private ?string $motPasse = null;
 
