@@ -11,17 +11,13 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-
       <ul class="navbar-nav">
-          {% if is_granted("ROLE_ADMIN") %}
-            <li class="nav-item">
-              <a class="nav-link" href="#">Villes</a>{# Mettre en administrateur uniquement #}
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Campus</a>
-            </li>
-          {% endif %}
-
+        <li class="nav-item">
+          <a class="nav-link" href="#">Villes</a>{# Mettre en administrateur uniquement #}
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Campus</a>
+        </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Accueil</a>
         </li>
@@ -38,8 +34,8 @@
 
 <body>
     <div class="container_participant_accueil">
-        <p>Date du jour : {{ "now" | date('d/m/Y') }}</p>
-        <p>Participant : {{ app.user.pseudo }}</p>
+        <p>Date du jour : 14/02/2023</p>
+        <p>Participant : Alexandre</p>
     </div>
     <div class="two_container">
         <div class="container_filter_accueil">
