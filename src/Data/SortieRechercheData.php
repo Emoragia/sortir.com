@@ -10,12 +10,17 @@ class SortieRechercheData
 {
     public Participant $participant;
     public ?Campus $campus = null;
-    public string $nomRecherche = '';
+    public ?string $nomRecherche = null;
     public ?\DateTime $borneDateInf = null;
     public ?\DateTime $borneDateSup = null;
     public bool $organisateur = true;
     public bool $inscrit = true;
     public bool $nonInscrit = true;
     public bool $sortiesPassees = false;
+
+    public function __construct(Participant $participant)
+    {
+        $this->participant = $participant;
+    }
 
 }

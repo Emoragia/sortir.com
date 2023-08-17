@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Data\SortieRechercheData;
+use App\Entity\Campus;
 use App\Entity\Participant;
 use App\Repository\SortieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
