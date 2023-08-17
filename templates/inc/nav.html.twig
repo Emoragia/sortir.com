@@ -7,14 +7,12 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-                {% if is_granted('ROLE_ADMIN') %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Villes</a>{# Mettre en administrateur uniquement #}
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Campus</a>
-                    </li>
-                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Villes</a>{# Mettre en administrateur uniquement #}
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Campus</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('main_accueil') }}">Accueil</a>
                 </li>
