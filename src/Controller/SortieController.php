@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Sortie;
 use App\Repository\SortieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,16 +15,12 @@ class SortieController extends AbstractController
     {
         return $this->render('main/accueil.html.twig');
     }
+    
 
+    #[Route('/sorties/details/{id}', name: 'sortie_details', requirements: ['id' => '\d+'], methods: ["GET"])]
+    public function afficherSortie(): Response{
 
-    #[Route('/sorties/details/{id}', name: 'sortie_details', requirements: ['id'=>'\d+'], methods: "GET")]
-    public function afficherSortie(int $id, SortieRepository $sortieRepository): Response
-    {
-        $sortie = $sortieRepository->findSorties($id);
-
-        return $this->render('main/accueil.html.twig', [
-            'sortie' => $sortie, 
-        ]);
+        return $this->render('main/accueil.html.twig');
     }
 
     #[Route('/sorties/modifier', name: 'sortie_modifier', methods: ['GET', 'POST'])]

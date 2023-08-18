@@ -2,21 +2,25 @@
 
 namespace App\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\SortieRepository;
 
 class InscriptionController extends AbstractController
 {
     #[Route('/inscription', name: 'inscription_inscription')]
-    public function inscrire(): void
+    public function inscrire(int $id, SortieRepository $sortieRepository, EntityManagerInterface $entityManager): Response
     {
+        $sortie = $sortieRepository->find($id);
+        $sortie->setEtat('Ouvert');
+        if ($sortie !== setEtat) {
 
 
-    }
-    #[Route('/inscriptions/se-desister', name: 'inscription_desistement')]
-    public function seDesister(): void
-    {
-
+            return new Response('Inscription réussie');
+        } else {
+            return new Response('Sortie non trouvée', 404);
+        }
     }
 }
