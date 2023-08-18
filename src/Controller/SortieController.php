@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Sortie;
+use App\Repository\SortieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,9 +15,12 @@ class SortieController extends AbstractController
     {
         return $this->render('main/accueil.html.twig');
     }
-    #[Route('/sorties/details/{id}', name: 'sortie_details', requirements: ['id'=>'\d+'], methods: "GET")]
-    public function afficherSortie(){
-        //TODO: renvoi vers une page details.html.twig
+    
+
+    #[Route('/sorties/details/{id}', name: 'sortie_details', requirements: ['id' => '\d+'], methods: ["GET"])]
+    public function afficherSortie(): Response{
+
+        return $this->render('main/accueil.html.twig');
     }
 
     #[Route('/sorties/modifier', name: 'sortie_modifier', methods: ['GET', 'POST'])]
