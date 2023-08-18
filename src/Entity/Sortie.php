@@ -40,7 +40,7 @@ class Sortie
     #[ORM\Column]
     private ?int $duree = null;
 
-    #[Assert\GreaterThan(propertyPath: 'dateHeureDebut')]
+    #[Assert\LessThan(propertyPath: 'dateHeureDebut')]
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $dateLimiteInscription = null;
 

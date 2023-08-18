@@ -12,7 +12,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use function PHPUnit\Framework\isEmpty;
 
-class ProfilController extends BaseController
+class ProfilController extends AbstractController
 {
     #[Route('/profil/modifier', name: 'profil_modifier', methods: ['GET','POST'])]
     public function modifierProfil(
