@@ -13,6 +13,8 @@ class SortieController extends AbstractController
     {
         return $this->render('main/accueil.html.twig');
     }
+    
+
     #[Route('/sorties/details/{id}', name: 'sortie_details', requirements: ['id'=>'\d+'], methods: "GET")]
     public function afficherSortie(){
         //TODO: renvoi vers une page details.html.twig

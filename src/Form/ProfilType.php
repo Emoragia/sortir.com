@@ -58,7 +58,7 @@ class ProfilType extends AbstractType
 //            Ajouter une classe StringToCampusTransformer si besoin d'activer le champ.
                 //ou créer un champ non mappé + getCampus->getNom avec $data réucpérer objet Camous en option
             ->add('campus', TextType::class, [
-                'label'=> 'Campus',
+                'label'=> 'Campus :',
                 'disabled'=>true
             ])
 //            ->add('photo')
