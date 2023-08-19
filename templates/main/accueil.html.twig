@@ -69,7 +69,7 @@
                             {% if sortie.etat.libelle in ['Ouverte','En cours','Passée'] %}
                                 <a href="#">Afficher</a>
                                 {% if sortie.etat.libelle == 'Ouverte' and sortie.participants.contains(app.user) %}
-                                    <a href="#">Se désister</a>
+                                    <a href="{{ path('sortie_desistement', {'id':sortie.id}) }}" title="Se désister">Se désister</a>
                                 {% elseif sortie.etat.libelle == 'Ouverte' and sortie.participants.count<sortie.nbInscriptionsMax %}
                                     <a href="{{ path('sortie_inscription', {'id': sortie.id}) }}" title="S'inscrire">S'inscrire</a>
                                 {% endif %}

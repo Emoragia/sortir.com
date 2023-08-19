@@ -4,9 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Participant;
 use App\Entity\Sortie;
+use App\Event\SortieEvent;
+use App\Event\SortieEventSubscriber;
+use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -42,10 +46,14 @@ class SortieController extends AbstractController
     #[Route('/sortie/inscription/{id}', name: 'sortie_inscription', requirements: ['id' => '\d+'], methods: ["GET"])]
     public function inscrire(
         SortieRepository $sortieRepository,
+        EtatRepository $etatRepository,
         int $id,
         EntityManagerInterface $entityManager
     ): Response
     {
+//        $dispatcher = new EventDispatcher();
+//        $subscriber = new SortieEventSubscriber();
+//        $dispatcher->addSubscriber($subscriber);
         $sortie = $sortieRepository->find($id);
         /** @var Participant $participant */
         $participant = $this->getUser();
@@ -59,6 +67,8 @@ class SortieController extends AbstractController
             $sortie->addParticipant($participant);
             $entityManager->persist($sortie);
             $entityManager->flush();
+            $inscriptionEvent = new SortieEvent($sortie);
+//            $dispatcher->dispatch($inscriptionEvent, SortieEvent::INSCRIPTION);
             $this->addFlash('success', 'Votre inscription a été prise en compte.');
         }
         else
@@ -68,9 +78,32 @@ class SortieController extends AbstractController
     //TODO : éventuellement, rediriger vers la page du détail de la sortie en cas de susccès de l'inscription ?
         return $this->redirectToRoute('main_accueil');
     }
-    #[Route('/desistement', name:'main_desistement')]
-    public function seDesister()
+    #[Route('/sortie/desistement/{id}', name:'sortie_desistement', requirements: ['id' => '\d+'], methods: ["GET"])]
+    public function seDesister(
+        SortieRepository $sortieRepository,
+        int $id,
+        EntityManagerInterface $entityManager
+    ):Response
     {
+        $sortie = $sortieRepository->find($id);
+        /** @var Participant $participant */
+        $participant = $this->getUser();
+        $today = new \DateTime('now');
+        $desincriptionPossible = $sortie
+            && ($sortie->getEtat()->getLibelle() == 'Ouverte' | $sortie->getEtat()->getLibelle() == 'Clôturée')
+            && $sortie->getDateHeureDebut() > $today;
+        if($desincriptionPossible)
+        {
+            $sortie->removeParticipant($participant);
+            $entityManager->persist($sortie);
+            $entityManager->flush();
+            $this->addFlash('success', 'Vous vous êtes désinscrit.e de la sortie.');
+        }
+        else
+        {
+            $this->addFlash('warning', 'Vous ne pouvez pas vous désinscrire de cette sortie.');
+        }
 
+        return $this->redirectToRoute('main_accueil');
     }
 }
