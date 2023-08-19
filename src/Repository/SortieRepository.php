@@ -35,41 +35,40 @@ class SortieRepository extends ServiceEntityRepository
             ->addSelect('e')
             ->leftJoin('s.participants', 'p')
             ->addSelect('p');
-        $queryBuilder->andWhere('s.siteOrganisateur = :campus');
+
         $queryBuilder->groupBy('s.idSortie');
+        $queryBuilder->orderBy('s.dateHeureDebut', 'DESC');
 
         //Sélection par campus
-        if(is_null($data->campus))
+        if($data->campus)
         {
-            $queryBuilder->setParameter('campus', $data->participant->getCampus()->getId());
-        }
-        else
-        {
+            $queryBuilder->andWhere('s.siteOrganisateur = :campus');
             $queryBuilder->setParameter('campus', $data->campus);
         }
 
         //Sélection par nom:
-        if(!is_null($data->nomRecherche))
+        if($data->nomRecherche)
         {
             $queryBuilder->andWhere('s.nom LIKE :mot')
                 ->setParameter('mot', $data->nomRecherche);
         }
 
         //Sélection par date
-        if(!is_null($data->borneDateInf) && !is_null($data->borneDateSup))
+        if(!$data->borneDateInf && $data->borneDateSup)
         {
             $queryBuilder->andWhere('s.dateHeureDebut BETWEEN :borneMin AND :borneMax')
                 ->setParameter('borneMin', $data->borneDateInf)
                 ->setParameter('borneMax', $data->borneDateSup);
         }
         //selection selon organisateur.ice
-        if($data->organisateur)
-        {
-            $queryBuilder->andWhere('s.organisateur = :organisateur')
-                ->setParameter('organisateur', $data->participant);
-        }
+        if($data->organisateur) {
 
-        //selection selon inscription
+            $queryBuilder
+                ->orWhere('e.libelle = \'Créée\'')
+                ->andWhere('s.organisateur = :organisateur')
+                ->setParameter('organisateur', $data->participant);
+
+        }
         if($data->inscrit && !$data->nonInscrit)
         {
             $queryBuilder->andWhere('s.participants = :participant')
@@ -84,15 +83,23 @@ class SortieRepository extends ServiceEntityRepository
         }
 
         //selection des sorties par etat
-        if(!$data->sortiesPassees)
+        if($data->sortiesPassees)
         {
-            $queryBuilder->andWhere('s.etat IN (1,2,3)');
+            $queryBuilder->andWhere('e.libelle = \'Passée\' AND DATE_DIFF(CURRENT_DATE(), s.dateHeureDebut) <= 31');
         }
 
         //TODO : ajouter que GETDATE() - s.dateHeureDebut <= 1 mois
         else
         {
-            $queryBuilder->andWhere('s.etat = 4');
+            if($data->organisateur)
+            {
+                $queryBuilder->andWhere('e.libelle IN (\'Ouverte\', \'En cours\', \'Créée\')');
+            }
+            else
+            {
+                $queryBuilder->andWhere('e.libelle IN (\'Ouverte\', \'En cours\')');
+            }
+
         }
 
 
@@ -100,13 +107,4 @@ class SortieRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
-//    public function findOneBySomeField($value): ?Sortie
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }
