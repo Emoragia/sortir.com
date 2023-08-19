@@ -13,9 +13,9 @@ class SortieRechercheData
     public ?string $nomRecherche = null;
     public ?\DateTime $borneDateInf = null;
     public ?\DateTime $borneDateSup = null;
-    public bool $organisateur = true;
-    public bool $inscrit = true;
-    public bool $nonInscrit = true;
+    public bool $organisateur = false;
+    public bool $inscrit = false;
+    public bool $nonInscrit = false;
     public bool $sortiesPassees = false;
 
     public function __construct(Participant $participant)

@@ -9,180 +9,58 @@
         <p>Date du jour : {{ "now" | date('d/m/y') }}</p>
         <p>Bienvenue {{ app.user.pseudo }} !</p>
     </div>
-    <div class="two_container">
-        <div class="container_filter_accueil">
-            <h4>Filtrer les sorties</h4>
-            <div class="container_filter_category">
-                <p>Campus</p>
-                <select class="category_filter_acceuil" name="category" id="category">
-                <option value="option1">ST HERBLAIN</option>
-                <option value="option2">NANTES</option>
-                <option value="option3">RENNES</option>
-                <!-- Ajoutez d'autres options si nécessaire -->
-                </select>
-            </div>
-            <div class="container_search_accueil">
-                <p>Le nom de la sortie contient : </p>
-                <div class="search-container">
-                    <input type="search" name="search" id="search" placeholder="Rechercher...">
-                    <button type="submit" class="search-button"><i class="fas fa-search"></i></button>
-                </div>
-            </div>
-            <div class="container_date_accueil">
-            <p>Entre</p>
-            <input class="date" type="date" name="birthdate" id="birthdate">
-            <p>Et</p>
-            <input class="date" type="date" name="birthdate" id="birthdate">
-            </div>
-        </div>
-        <div class="second_container_filter_accueil">
-            <div class="container_checkbox_accueil">
-                <input type="checkbox" name="option1" id="option1" checked>
-                <label for="option1">Sorties dont je suis l'organisateur/trice</label>
-                <br>
-                <input type="checkbox" name="option2" id="option2" checked>
-                <label for="option2">Sorties auxquelles je suis inscrit/e</label>
-                <br>
-                <input type="checkbox" name="option3" id="option3" checked>
-                <label for="option3">Sorties auxquelles je ne suis pas inscrit/e</label>
-                <br>
-                <input type="checkbox" name="option4" id="option4" checked>
-                <label for="option4">Sorties passées</label>
-            </div>
-            <div class="container_submit_acceuil">
-                <input type="submit" value="Rechercher">
-            </div>
-        </div>
-    </div>
-    <div class="tableau_container">
-      <div class="Nom_de_la_sortie">
-        <p class="title_tableau">Nom de la sortie</p>
-        <p class="result1_tableau">Philo</p>
-        <p>Origamie</p>
-        <p class="result1_tableau">Philo</p>
-        <p>Origamie</p>
-        <p class="result1_tableau">Philo</p>
-        <p>Origamie</p>
-        <p class="result1_tableau">Philo</p>
-      </div>
-      <div class="Nom_de_la_sortie">
-        <p class="title_tableau">Date de la sortie</p>
-        <p class="result1_tableau">19/07/2023 20:40</p>
-        <p>19/07/2023 20:40</p>
-        <p class="result1_tableau">19/07/2023 20:40</p>
-        <p>19/07/2023 20:40</p>
-        <p class="result1_tableau">19/07/2023 20:40</p>
-        <p>19/07/2023 20:40</p>
-        <p class="result1_tableau">19/07/2023 20:40</p>
-      </div>
-            <div class="Nom_de_la_sortie">
-        <p class="title_tableau">Clôture</p>
-        <p class="result1_tableau">20/09/2023</p>
-        <p>20/09/2023</p>
-        <p class="result1_tableau">20/09/2023</p>
-        <p>20/09/2023</p>
-        <p class="result1_tableau">20/09/2023</p>
-        <p>20/09/2023</p>
-        <p class="result1_tableau">20/09/2023</p>
-      </div>
-            <div class="Nom_de_la_sortie">
-        <p class="title_tableau">Inscrit/Places</p>
-        <p class="result1_tableau">8/10</p>
-        <p>10/10</p>
-        <p class="result1_tableau">8/10</p>
-        <p>6/10</p>
-        <p class="result1_tableau">4/10</p>
-        <p>8/10</p>
-        <p class="result1_tableau">8/10</p>
-      </div>
-            <div class="Nom_de_la_sortie">
-        <p class="title_tableau">Etat</p>
-        <p class="result1_tableau">En cours</p>
-        <p>Fermé</p>
-        <p class="result1_tableau">Fermé</p>
-        <p>Ouvert</p>
-        <p class="result1_tableau">En création</p>
-        <p>Fermé</p>
-        <p class="result1_tableau">Fermé</p>
-      </div>
-            <div class="Nom_de_la_sortie">
-        <p class="title_tableau">Inscrit</p>
-        <p class="result1_tableau">Oui</p>
-        <p></p>
-        <p class="result1_tableau">Oui</p>
-        <p></p>
-        <p class="result1_tableau">Oui</p>
-        <p></p>
-        <p class="result1_tableau"></p>
-      </div>
-            <div class="Nom_de_la_sortie">
-        <p class="title_tableau">Organisateur</p>
-        <p class="result1_tableau">Spyzo .A</p>
-        <p>Spyza .B</p>
-        <p class="result1_tableau">Roland .D</p>
-        <p>DODO .S</p>
-        <p class="result1_tableau">OULA .B</p>
-        <p>UNUN .D</p>
-        <p class="result1_tableau">KOKOA .A</p>
-      </div>
-            <div class="Nom_de_la_sortie">
-        <p class="title_tableau">Action</p>
-        <p class="result1_tableau">Afficher</p>
-        <p>Afficher - Se désiter</p>
-        <p class="result1_tableau">Afficher - Se désiter</p>
-        <p>Afficher - S'inscrire</p>
-        <p class="result1_tableau">Modifier - Publier</p>
-        <p>Afficher - Annuler</p>
-        <p class="result1_tableau">Afficher - Annuler</p>
-      </div>
-    </div>
-    <div class="btn_create_sortie">
-      <input type="submit" value="Crée une sortie">
+    <div>
+        {{ form_start(rechercheForm) }}
+        {{ form_widget(rechercheForm) }}
+        <button>Rechercher</button>
+        {{ form_end(rechercheForm) }}
     </div>
     <table class="table">
         <thead>
-            <tr>
-                <th scope="col">Nom de la sortie </th>
-                <th scope="col">Date de la sortie </th>
-                <th scope="col">Clotûre </th>
-                <th scope="col">Inscrit.e.s/Places</th>
-                <th scope="col">État </th>
-                <th scope="col">Inscrit.e : </th>
-                <th scope="col">Organisateur.ice : </th>
-                <th scope="col">Actions :</th>
-            </tr>
+        <tr>
+            <th scope="col">Nom de la sortie </th>
+            <th scope="col">Date de la sortie </th>
+            <th scope="col">Clotûre </th>
+            <th scope="col">Inscrit.e.s/Places</th>
+            <th scope="col">État </th>
+            <th scope="col">Inscrit.e : </th>
+            <th scope="col">Organisateur.ice : </th>
+            <th scope="col">Actions :</th>
+        </tr>
         </thead>
         <tbody>
         {% for sortie in sorties %}
-            <tr>
-                <td>{{ sortie.nom }}</td>
-                <td>{{ sortie.dateHeureDebut | date('d/m/Y H:i') }}</td>
-                <td>{{ sortie.dateLimiteInscription | date('d/m/Y') }}</td>
-                <td>{{ sortie.participants.count }}/{{ sortie.nbInscriptionsMax }}</td>
-                <td>{{ sortie.etat.libelle }}</td>
-                <td>{{ sortie.participants.contains(app.user) ? 'X' : '' }}</td>
-                <td>{{ sortie.organisateur.nom }}</td>
-                <td>
-                    {% if sortie.organisateur == app.user%}
-                        {% if sortie.etat.libelle == 'Créée' %}
-                            <a href="#">Modifier</a>
-                            <a href="#">Publier</a>
-                        {% elseif sortie.etat.libelle == 'Ouverte'%}
-                            <a href="#">Afficher</a>
-                            <a href="#">Annuler</a>
-                        {% endif %}
-                    {% else %}
-                        {% if sortie.etat.libelle in ['Ouverte','En cours','Passée'] %}
-                            <a href="#">Afficher</a>
-                            {% if sortie.etat.libelle == 'Ouverte' and sortie.participants.contains(app.user) %}
-                                <a href="#">Se désister</a>
-                            {% elseif sortie.etat.libelle == 'Ouverte' and sortie.participants.count<sortie.nbInscriptionsMax %}
-                                <a href="{{ path('inscription_inscription') }}">S'inscrire</a>
+            {% if not (sortie.etat.libelle == 'Créée' and sortie.organisateur != app.user) %}
+                <tr>
+                    <td>{{ sortie.nom }}</td>
+                    <td>{{ sortie.dateHeureDebut | date('d/m/Y H:i') }}</td>
+                    <td>{{ sortie.dateLimiteInscription | date('d/m/Y') }}</td>
+                    <td>{{ sortie.participants.count }}/{{ sortie.nbInscriptionsMax }}</td>
+                    <td>{{ sortie.etat.libelle }}</td>
+                    <td>{{ sortie.participants.contains(app.user) ? 'X' : '' }}</td>
+                    <td>{{ sortie.organisateur.nom }}</td>
+                    <td>
+                        {% if sortie.organisateur == app.user%}
+                            {% if sortie.etat.libelle == 'Créée' %}
+                                <a href="#">Modifier</a>
+                                <a href="#">Publier</a>
+                            {% elseif sortie.etat.libelle == 'Ouverte'%}
+                                <a href="#">Afficher</a>
+                                <a href="#">Annuler</a>
+                            {% endif %}
+                        {% else %}
+                            {% if sortie.etat.libelle in ['Ouverte','En cours','Passée'] %}
+                                <a href="#">Afficher</a>
+                                {% if sortie.etat.libelle == 'Ouverte' and sortie.participants.contains(app.user) %}
+                                    <a href="#">Se désister</a>
+                                {% elseif sortie.etat.libelle == 'Ouverte' and sortie.participants.count<sortie.nbInscriptionsMax %}
+                                    <a href="{{ path('inscription_inscription') }}">S'inscrire</a>
+                                {% endif %}
                             {% endif %}
                         {% endif %}
-                    {% endif %}
-                </td>
-            </tr>
+                    </td>
+                </tr>
+            {% endif %}
         {% endfor %}
         </tbody>
     </table>

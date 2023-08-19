@@ -18,11 +18,9 @@ class MainController extends AbstractController
     public function listeSorties(SortieRepository $sortieRepository, Request $request): Response
     {
         //TODO: en fonction des options choisies, lancer les méthodes appropriées des Repository
-//        $sorties = $sortieRepository->findAll();
         /** @var Participant $participant */
         $participant = $this->getUser();
         $data = new SortieRechercheData($participant);
-        $data->campus = $participant->getCampus();
         $rechercheForm = $this->createForm(SortieRechercheDataType::class, $data);
         $rechercheForm->handleRequest($request);
         $sorties = $sortieRepository->findSorties($data);

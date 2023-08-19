@@ -37,7 +37,7 @@ class SortieRepository extends ServiceEntityRepository
             ->addSelect('p');
 
         $queryBuilder->groupBy('s.idSortie');
-        $queryBuilder->orderBy('s.dateHeureDebut', 'DESC');
+        $queryBuilder->orderBy('s.dateHeureDebut', 'ASC');
 
         //Sélection par campus
         if($data->campus)
@@ -54,7 +54,7 @@ class SortieRepository extends ServiceEntityRepository
         }
 
         //Sélection par date
-        if(!$data->borneDateInf && $data->borneDateSup)
+        if($data->borneDateInf && $data->borneDateSup && $data->borneDateSup > $data->borneDateInf)
         {
             $queryBuilder->andWhere('s.dateHeureDebut BETWEEN :borneMin AND :borneMax')
                 ->setParameter('borneMin', $data->borneDateInf)
@@ -64,20 +64,19 @@ class SortieRepository extends ServiceEntityRepository
         if($data->organisateur) {
 
             $queryBuilder
-                ->orWhere('e.libelle = \'Créée\'')
                 ->andWhere('s.organisateur = :organisateur')
                 ->setParameter('organisateur', $data->participant);
 
         }
         if($data->inscrit && !$data->nonInscrit)
         {
-            $queryBuilder->andWhere('s.participants = :participant')
+            $queryBuilder->andWhere(':participant MEMBER OF s.participants')
                 ->setParameter('participant', $data->participant);
         }
 
         if(!$data->inscrit && $data->nonInscrit)
         {
-            $queryBuilder->andWhere('s.participants != :participant')
+            $queryBuilder->andWhere(':participant NOT MEMBER OF s.participants')
                 ->setParameter('participant', $data->participant);
 
         }
@@ -91,15 +90,7 @@ class SortieRepository extends ServiceEntityRepository
         //TODO : ajouter que GETDATE() - s.dateHeureDebut <= 1 mois
         else
         {
-            if($data->organisateur)
-            {
                 $queryBuilder->andWhere('e.libelle IN (\'Ouverte\', \'En cours\', \'Créée\')');
-            }
-            else
-            {
-                $queryBuilder->andWhere('e.libelle IN (\'Ouverte\', \'En cours\')');
-            }
-
         }
 
 
