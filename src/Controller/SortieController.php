@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Participant;
 use App\Entity\Sortie;
 use App\Repository\SortieRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -36,5 +38,39 @@ class SortieController extends AbstractController
     public function annulerSortie(): Response
     {
         return $this->render('sortie/annuler.html.twig');
+    }
+    #[Route('/sortie/inscription/{id}', name: 'sortie_inscription', requirements: ['id' => '\d+'], methods: ["GET"])]
+    public function inscrire(
+        SortieRepository $sortieRepository,
+        int $id,
+        EntityManagerInterface $entityManager
+    ): Response
+    {
+        $sortie = $sortieRepository->find($id);
+        /** @var Participant $participant */
+        $participant = $this->getUser();
+        $today = new \DateTime('now');
+        $inscriptionPossible = $sortie
+            && $sortie->getEtat()->getLibelle()=='Ouverte'
+            && $sortie->getDateLimiteInscription() >= $today
+            && count($sortie->getParticipants()) < $sortie->getNbInscriptionsMax();
+        if($inscriptionPossible)
+        {
+            $sortie->addParticipant($participant);
+            $entityManager->persist($sortie);
+            $entityManager->flush();
+            $this->addFlash('success', 'Votre inscription a été prise en compte.');
+        }
+        else
+        {
+            $this->addFlash('warning', 'Votre inscription n\'a pas pu être prise en compte (l\'organisateur.ice a annulé la sortie, le nombre maximum de participant.e.s est atteint ou la date limite d\'inscription est dépassée).');
+        }
+    //TODO : éventuellement, rediriger vers la page du détail de la sortie en cas de susccès de l'inscription ?
+        return $this->redirectToRoute('main_accueil');
+    }
+    #[Route('/desistement', name:'main_desistement')]
+    public function seDesister()
+    {
+
     }
 }

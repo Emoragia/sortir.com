@@ -30,24 +30,4 @@ class MainController extends AbstractController
                'sorties'=>$sorties
        ]);
     }
-    #[Route('/inscription', name: 'main_inscription')]
-    public function inscrire(): Response
-    {
-//        $sortie = $sortieRepository->find($id);
-//        $sortie->setEtat('Ouvert');
-//        if ($sortie !== setEtat) {
-//
-//
-//            return new Response('Inscription réussie');
-//        } else {
-//            return new Response('Sortie non trouvée', 404);
-//        }
-        $this->addFlash('success', 'Votre inscription a été prise en compte.');
-        return $this->redirectToRoute('main_accueil');
-    }
-    #[Route('/desistement', name:'main_desistement')]
-    public function seDesister()
-    {
-
-    }
 }

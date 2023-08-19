@@ -71,7 +71,7 @@
                                 {% if sortie.etat.libelle == 'Ouverte' and sortie.participants.contains(app.user) %}
                                     <a href="#">Se désister</a>
                                 {% elseif sortie.etat.libelle == 'Ouverte' and sortie.participants.count<sortie.nbInscriptionsMax %}
-                                    <a href="{{ path('main_inscription') }}">S'inscrire</a>
+                                    <a href="{{ path('sortie_inscription', {'id': sortie.id}) }}" title="S'inscrire">S'inscrire</a>
                                 {% endif %}
                             {% endif %}
                         {% endif %}
