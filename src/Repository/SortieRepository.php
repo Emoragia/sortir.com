@@ -90,7 +90,7 @@ class SortieRepository extends ServiceEntityRepository
         //TODO : ajouter que GETDATE() - s.dateHeureDebut <= 1 mois
         else
         {
-                $queryBuilder->andWhere('e.libelle IN (\'Ouverte\', \'En cours\', \'Créée\')');
+                $queryBuilder->andWhere('e.libelle IN (\'Ouverte\', \'En cours\', \'Créée\', \'Clôturée\')');
         }
 
 

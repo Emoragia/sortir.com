@@ -51,9 +51,9 @@ class SortieController extends AbstractController
         EntityManagerInterface $entityManager
     ): Response
     {
-//        $dispatcher = new EventDispatcher();
-//        $subscriber = new SortieEventSubscriber();
-//        $dispatcher->addSubscriber($subscriber);
+        $dispatcher = new EventDispatcher();
+        $subscriber = new SortieEventSubscriber($etatRepository, $entityManager);
+        $dispatcher->addSubscriber($subscriber);
         $sortie = $sortieRepository->find($id);
         /** @var Participant $participant */
         $participant = $this->getUser();
@@ -68,7 +68,7 @@ class SortieController extends AbstractController
             $entityManager->persist($sortie);
             $entityManager->flush();
             $inscriptionEvent = new SortieEvent($sortie);
-//            $dispatcher->dispatch($inscriptionEvent, SortieEvent::INSCRIPTION);
+            $dispatcher->dispatch($inscriptionEvent, SortieEvent::INSCRIPTION);
             $this->addFlash('success', 'Votre inscription a été prise en compte.');
         }
         else
@@ -81,10 +81,14 @@ class SortieController extends AbstractController
     #[Route('/sortie/desistement/{id}', name:'sortie_desistement', requirements: ['id' => '\d+'], methods: ["GET"])]
     public function seDesister(
         SortieRepository $sortieRepository,
+        EtatRepository $etatRepository,
         int $id,
         EntityManagerInterface $entityManager
     ):Response
     {
+        $dispatcher = new EventDispatcher();
+        $subscriber = new SortieEventSubscriber($etatRepository, $entityManager);
+        $dispatcher->addSubscriber($subscriber);
         $sortie = $sortieRepository->find($id);
         /** @var Participant $participant */
         $participant = $this->getUser();
@@ -97,6 +101,8 @@ class SortieController extends AbstractController
             $sortie->removeParticipant($participant);
             $entityManager->persist($sortie);
             $entityManager->flush();
+            $inscriptionEvent = new SortieEvent($sortie);
+            $dispatcher->dispatch($inscriptionEvent, SortieEvent::DESISTEMENT);
             $this->addFlash('success', 'Vous vous êtes désinscrit.e de la sortie.');
         }
         else

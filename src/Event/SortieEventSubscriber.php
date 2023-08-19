@@ -5,10 +5,19 @@ namespace App\Event;
 use App\Entity\Etat;
 use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 class SortieEventSubscriber implements \Symfony\Component\EventDispatcher\EventSubscriberInterface
 {
+    private EtatRepository $etatRepository;
+    private EntityManagerInterface $entityManager;
+    public function __construct(EtatRepository $etatRepository, EntityManagerInterface $entityManager)
+    {
+        $this->etatRepository = $etatRepository;
+        $this->entityManager = $entityManager;
+    }
+
     public static function getSubscribedEvents(): array
     {
         return [
@@ -36,13 +45,17 @@ class SortieEventSubscriber implements \Symfony\Component\EventDispatcher\EventS
         $today = new \DateTime('now');
         $nbMaxParticipantsAtteint = count($sortie->getParticipants())== $sortie->getNbInscriptionsMax();
         if($sortie->getEtat()->getLibelle() == 'Ouverte' &&  $nbMaxParticipantsAtteint){
-            $sortie->setEtat($etatRepository->findOneBy(['Clôturée']));
+            $sortie->setEtat($this->etatRepository->findOneBy(['libelle'=>'Clôturée']));
+            $this->entityManager->persist($sortie);
+            $this->entityManager->flush();
         }
         if($sortie->getEtat()->getLibelle() == 'Clôturée'
         && !$nbMaxParticipantsAtteint
         && $sortie->getDateLimiteInscription() >= $today)
         {
-            $sortie->setEtat($etatRepository->findOneBy(['Ouverte']));
+            $sortie->setEtat($this->etatRepository->findOneBy(['libelle'=>'Ouverte']));
+            $this->entityManager->persist($sortie);
+            $this->entityManager->flush();
         }
     }
 }
