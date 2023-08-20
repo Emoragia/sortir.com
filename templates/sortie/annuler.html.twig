@@ -8,21 +8,16 @@
         <div class="container_annuler_title">
             <h3>Annuler une sortie</h3>
         </div>
-        <div class="container_annuler_desc">
-            <p>Nom de la sortie : Escalade</p>
-            <p>Date de la sortie : 02/08/2023</p>
-            <p>Campus : ST HERBLAIN</p>
-            <p>Lieu : Pont Caf rue des campagnons 44900 Château-Thebaud</p>
-            <div class="form-group">
-                <label for="exampleFormControlTextarea1">Motif : </label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        <div class="card">
+            <div class="card-body">
+                {{ form_start(annulerForm) }}
+                {{ form_widget(annulerForm) }}
+                {#    TODO : ajouter du JS pour intercépter la submission et demander à l'utilisateur.ice s'il souhaite vraiment annuler#}
+                <button type="submit">Enregistrer</button>
+                <a href="{{ path('main_accueil') }}"><button type="button">Annuler</button></a>
+
+                {{ form_end(annulerForm) }}
             </div>
         </div>
     </div>
-    {{ form_start(annulerForm) }}
-    {{ form_widget(annulerForm) }}
-    <button type="submit">Enregistrer</button>
-    <button type="button">Annuler</button>
-    {{ form_end(annulerForm) }}
-
 {% endblock %}

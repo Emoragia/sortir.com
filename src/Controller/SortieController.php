@@ -44,14 +44,28 @@ class SortieController extends AbstractController
     public function annulerSortie(
         Request $request,
         int $id,
-        SortieRepository $sortieRepository): Response
+        SortieRepository $sortieRepository,
+        EtatRepository $etatRepository,
+        EntityManagerInterface $entityManager): Response
     {
         $sortie = $sortieRepository->find($id);
+        $today = new \DateTime('now');
         $annulerForm = $this->createForm(AnnulerSortieType::class, $sortie);
         $annulerForm->handleRequest($request);
         if($annulerForm->isSubmitted() && $annulerForm->isValid())
         {
-            $this->addFlash('success','La sortie a été annulée.');
+            if($sortie->getEtat()->getLibelle()!='En cours' && $sortie->getDateHeureDebut() > $today)
+            {
+                $sortie->setEtat($etatRepository->findOneBy(['libelle'=>'Annulée']));
+                $entityManager->persist($sortie);
+                $entityManager->flush();
+                $this->addFlash('success','La sortie a été annulée.');
+            }
+            else
+            {
+                $this->addFlash('danger', 'Vous ne pouvez pas annuler cette sortie (elle est en cours).');
+            }
+            return $this->redirectToRoute('main_accueil');
         }
         return $this->render('sortie/annuler.html.twig', [
             'annulerForm' => $annulerForm->createView()

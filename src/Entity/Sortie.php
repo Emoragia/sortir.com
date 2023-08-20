@@ -18,11 +18,11 @@ class Sortie
     #[ORM\Column(name: 'id')]
     private ?int $idSortie = null;
 
-    #[Assert\Regex('/^\w+$/')]
+    #[Assert\Regex('/^\w+/')]
     #[Assert\Length(
-        min: 10,
+        min: 5,
         max: 80,
-        minMessage: 'Le nom doit contenir au moins 6 caractères alphanumériques',
+        minMessage: 'Le nom doit contenir au moins 5 caractères alphanumériques',
         maxMessage: 'le nom ne peut pas contenir plus de 80 caractères.'
     )]
     #[Assert\NotBlank(message: 'Veuillez saisir un nom pour votre sortie s\'il vous plaît.')]
@@ -49,7 +49,7 @@ class Sortie
     #[ORM\Column]
     private ?int $nbInscriptionsMax = null;
 
-    #[Assert\Regex('/^\w+$/')]
+    #[Assert\Regex('/^\w+/')]
     #[Assert\Length(
         min: 10,
         max: 255,
