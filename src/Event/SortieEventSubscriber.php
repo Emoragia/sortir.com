@@ -2,16 +2,12 @@
 
 namespace App\Event;
 
-use App\Controller\MainController;
-use App\Entity\Etat;
 use App\Entity\Sortie;
 use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use function PHPUnit\Framework\isEmpty;
 
 class SortieEventSubscriber implements \Symfony\Component\EventDispatcher\EventSubscriberInterface
 {
@@ -45,10 +41,13 @@ class SortieEventSubscriber implements \Symfony\Component\EventDispatcher\EventS
         $today = new \DateTime('now');
         /** @var Sortie[] $sortiesOuvertes */
         $sortiesOuvertes = $this->sortieRepository->findSortiesByState('Ouverte');
+        /** @var Sortie[] $sortiesCloturees */
+        $sortiesCloturees = $this->sortieRepository->findSortiesByState('Clôturée');
         /** @var Sortie[] $sortiesEnCours */
         $sortiesEnCours = $this->sortieRepository->findSortiesByState('Activité en cours');
 //        dd($sortiesEnCours, $sortiesOuvertes);
 
+        //On vérifie si les sorties ouvertes doivent  être 'Clôturée' ou être enregistrée comme 'Activité en cours'
         if(!empty($sortiesOuvertes))
         {
 //            dd($sortiesOuvertes);
@@ -68,6 +67,21 @@ class SortieEventSubscriber implements \Symfony\Component\EventDispatcher\EventS
                 }
             }
         }
+        //On vérifie si les sorties clôturées doivent être enregistrées en 'Activité en cours'
+        if(!empty($sortiesCloturees))
+        {
+//            dd($sortiesOuvertes);
+            foreach ($sortiesCloturees as $sortie)
+            {
+                if($today >= $sortie->getDateHeureDebut())
+                {
+                    $sortie->setEtat($this->etatRepository->findOneBy(['libelle'=>'Activité en cours']));
+                    $this->entityManager->persist($sortie);
+                    $this->entityManager->flush();
+                }
+            }
+        }
+        //On vérifie si les sorties en cours doivent être enregistrées comme 'Passées'
         if(!empty($sortiesEnCours))
         {
 //            dd($sortiesEnCours);
