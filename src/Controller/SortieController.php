@@ -6,11 +6,13 @@ use App\Entity\Participant;
 use App\Entity\Sortie;
 use App\Event\SortieEvent;
 use App\Event\SortieEventSubscriber;
+use App\Form\AnnulerSortieType;
 use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -38,10 +40,22 @@ class SortieController extends AbstractController
     public function supprimerSortie(){
         //TODO : renvoi vers la page d'accueil
     }
-    #[Route('/sorties/annuler', name: 'sortie_annuler', methods: ['GET','POST'])]
-    public function annulerSortie(): Response
+    #[Route('/sorties/annuler/{id}', name: 'sortie_annuler', requirements: ['id' => '\d+'], methods: ['GET','POST'])]
+    public function annulerSortie(
+        Request $request,
+        int $id,
+        SortieRepository $sortieRepository): Response
     {
-        return $this->render('sortie/annuler.html.twig');
+        $sortie = $sortieRepository->find($id);
+        $annulerForm = $this->createForm(AnnulerSortieType::class, $sortie);
+        $annulerForm->handleRequest($request);
+        if($annulerForm->isSubmitted() && $annulerForm->isValid())
+        {
+            $this->addFlash('success','La sortie a été annulée.');
+        }
+        return $this->render('sortie/annuler.html.twig', [
+            'annulerForm' => $annulerForm->createView()
+        ]);
     }
     #[Route('/sortie/inscription/{id}', name: 'sortie_inscription', requirements: ['id' => '\d+'], methods: ["GET"])]
     public function inscrire(
@@ -52,7 +66,7 @@ class SortieController extends AbstractController
     ): Response
     {
         $dispatcher = new EventDispatcher();
-        $subscriber = new SortieEventSubscriber($etatRepository, $entityManager);
+        $subscriber = new SortieEventSubscriber($etatRepository, $entityManager, $sortieRepository);
         $dispatcher->addSubscriber($subscriber);
         $sortie = $sortieRepository->find($id);
         /** @var Participant $participant */
@@ -87,7 +101,7 @@ class SortieController extends AbstractController
     ):Response
     {
         $dispatcher = new EventDispatcher();
-        $subscriber = new SortieEventSubscriber($etatRepository, $entityManager);
+        $subscriber = new SortieEventSubscriber($etatRepository, $entityManager, $sortieRepository);
         $dispatcher->addSubscriber($subscriber);
         $sortie = $sortieRepository->find($id);
         /** @var Participant $participant */

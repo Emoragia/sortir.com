@@ -61,9 +61,11 @@
                             {% if sortie.etat.libelle == 'Créée' %}
                                 <a href="#">Modifier</a>
                                 <a href="#">Publier</a>
-                            {% elseif sortie.etat.libelle == 'Ouverte'%}
+                            {% elseif sortie.etat.libelle in ['Ouverte', 'Clôturée'] %}
                                 <a href="#">Afficher</a>
-                                <a href="#">Annuler</a>
+                                <a href="{{ path('sortie_annuler', {'id':sortie.id}) }}">Annuler</a>
+                            {% else %}
+                                <a href="#">Afficher</a>
                             {% endif %}
                         {% else %}
                             {% if sortie.etat.libelle in ['Ouverte','En cours','Passée', 'Clôturée'] %}

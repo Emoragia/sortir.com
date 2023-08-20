@@ -19,5 +19,10 @@
             </div>
         </div>
     </div>
+    {{ form_start(annulerForm) }}
+    {{ form_widget(annulerForm) }}
+    <button type="submit">Enregistrer</button>
+    <button type="button">Annuler</button>
+    {{ form_end(annulerForm) }}
 
 {% endblock %}
