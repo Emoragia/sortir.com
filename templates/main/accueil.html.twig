@@ -55,7 +55,7 @@
                     <td class="text-center">{{ sortie.participants.count }}/{{ sortie.nbInscriptionsMax }}</td>
                     <td class="text-center">{{ sortie.etat.libelle }}</td>
                     <td class="text-center">{{ sortie.participants.contains(app.user) ? 'X' : '' }}</td>
-                    <td>{{ sortie.organisateur.nom }}</td>
+                    <td><a href="{{ path('profil_details', {'id': sortie.organisateur.id}) }}">{{ sortie.organisateur.nom }}</a></td>
                     <td>
                         {% if sortie.organisateur == app.user%}
                             {% if sortie.etat.libelle == 'Créée' %}

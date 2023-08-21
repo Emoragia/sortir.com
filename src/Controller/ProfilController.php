@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Participant;
 use App\Form\ProfilType;
+use App\Repository\ParticipantRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -53,8 +54,11 @@ class ProfilController extends AbstractController
         ]);
     }
     #[Route('/profil/details/{id}', name: 'profil_details', requirements: ['id'=>'\d+'], methods: "GET")]
-    public function detailsProfil(): Response
+    public function detailsProfil(int $id, ParticipantRepository $participantRepository): Response
     {
-        return $this->render('profil/details.html.twig');
+        $profilConsulte = $participantRepository->find($id);
+        return $this->render('profil/details.html.twig', [
+            'profilConsulte'=>$profilConsulte
+        ]);
     }
 }
