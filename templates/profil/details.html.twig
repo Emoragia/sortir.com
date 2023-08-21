@@ -3,70 +3,26 @@
 {% block title %}Hello AppercuProfilController!{% endblock %}
 
 {% block body %}
-
-  <div class="Title_Profil">
-    <h3>Mon Profil</h3>
-  </div>
-
-<form class="FormProfilDetails">
-  <div class="form-group row">
-    <label for="colFormLabel" class="col-sm-2 col-form-label">Pseudo :</label>
-    <div class="col-sm-10">
-      <input type="email" class="form-control" id="colFormLabel" placeholder="Mon pseudo">
+<div class="container mx-auto p-5" style="width: 50%">
+  <div class="card text-center shadow">
+    <div class="row">
+      <div class="col-md-4 align-self-center">
+        <img src="{{ asset('images/user.png') }}" class="rounded-start" alt="logo_user " style="width: 210px">
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title">{{ profilConsulte.pseudo }}</h5>
+          <p> <strong>Prénom : </strong>{{ profilConsulte.prenom }}</p>
+          <p><strong>Nom : </strong>{{ profilConsulte.nom }}</p>
+          {% if(profilConsulte.telephone) %}
+            <p><strong>Téléphone : </strong>{{ profilConsulte.telephone }}</p>
+          {% endif %}
+          <p><strong>Email : </strong>{{ profilConsulte.email }}</p>
+          <p><strong>Campus : </strong>{{ profilConsulte.campus.nom }}</p>
+          <a href="{{ path('main_accueil') }}"><button type="button">Retour</button></a>
+        </div>
+      </div>
     </div>
   </div>
-    <div class="form-group row">
-    <label for="colFormLabel" class="col-sm-2 col-form-label">Prénom :</label>
-    <div class="col-sm-10">
-      <input type="email" class="form-control" id="colFormLabel" placeholder="Mon prénom">
-    </div>
-  </div>
-    <div class="form-group row">
-    <label for="colFormLabel" class="col-sm-2 col-form-label">Nom :</label>
-    <div class="col-sm-10">
-      <input type="email" class="form-control" id="colFormLabel" placeholder="Mon nom">
-    </div>
-  </div>
-    <div class="form-group row">
-    <label for="colFormLabel" class="col-sm-2 col-form-label">Téléphone :</label>
-    <div class="col-sm-10">
-      <input type="email" class="form-control" id="colFormLabel" placeholder="Numéro de téléphone">
-    </div>
-  </div>
-    <div class="form-group row">
-    <label for="colFormLabel" class="col-sm-2 col-form-label">Email :</label>
-    <div class="col-sm-10">
-      <input type="email" class="form-control" id="colFormLabel" placeholder="Mon email">
-    </div>
-  </div>
-  <div class="form-group row">
-    <label for="inputPassword3" class="col-sm-2 col-form-label">Mot de passe :</label>
-    <div class="col-sm-10">
-      <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
-    </div>
-  </div>
-  <div class="form-group row">
-    <label for="inputPassword3" class="col-sm-2 col-form-label">Confirmation :</label>
-    <div class="col-sm-10">
-      <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
-    </div>
-  </div>
-      <div class="col-auto my-1">
-      <label class="mr-sm-2" for="inlineFormCustomSelect">Campus</label>
-      <select class="custom-select mr-sm-2" id="inlineFormCustomSelect">
-        <option selected>Choisir...</option>
-        <option value="1">Nantes</option>
-        <option value="2">Rennes</option>
-        <option value="3">Paris</option>
-      </select>
-    </div>
-  <div class="form-group">
-    <label for="exampleFormControlFile1">Ma photo :</label>
-    <input type="file" class="form-control-file" id="exampleFormControlFile1">
-  </div>
-</form>
-  <h1>{{ profilConsulte.pseudo }}</h1>
-
-
-
+</div>
 {% endblock %}
