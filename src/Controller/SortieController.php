@@ -76,14 +76,11 @@ class SortieController extends AbstractController
     #[Route('/sortie/inscription/{id}', name: 'sortie_inscription', requirements: ['id' => '\d+'], methods: ["GET"])]
     public function inscrire(
         SortieRepository $sortieRepository,
-        EtatRepository $etatRepository,
         int $id,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        EventDispatcherInterface $dispatcher,
     ): Response
     {
-        $dispatcher = new EventDispatcher();
-        $subscriber = new SortieEventSubscriber($etatRepository, $entityManager, $sortieRepository);
-        $dispatcher->addSubscriber($subscriber);
         $sortie = $sortieRepository->find($id);
         /** @var Participant $participant */
         $participant = $this->getUser();
@@ -111,15 +108,11 @@ class SortieController extends AbstractController
     #[Route('/sortie/desistement/{id}', name:'sortie_desistement', requirements: ['id' => '\d+'], methods: ["GET"])]
     public function seDesister(
         SortieRepository $sortieRepository,
-        EtatRepository $etatRepository,
         int $id,
         EntityManagerInterface $entityManager,
         EventDispatcherInterface $dispatcher,
     ):Response
     {
-//        $dispatcher = new EventDispatcher();
-//        $subscriber = new SortieEventSubscriber($etatRepository, $entityManager, $sortieRepository);
-//        $dispatcher->addSubscriber($subscriber);
         $sortie = $sortieRepository->find($id);
         /** @var Participant $participant */
         $participant = $this->getUser();
