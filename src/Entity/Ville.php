@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\VilleRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -24,6 +25,9 @@ class Ville
     private ?string $codePostal = null;
 
     //TODO: ajout champs lieux de type array
+    #[ORM\OneToMany(mappedBy: 'ville', targetEntity: Lieu::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Collection $lieux;
 
     public function getId(): ?int
     {
