@@ -140,4 +140,18 @@ class SortieController extends AbstractController
 
         return $this->redirectToRoute('main_accueil');
     }
+    #[Route('/sorties/creation', name: 'sortie_creation', methods: ['GET','POST'])]
+    public function creationSortie(): Response
+    {
+
+        $nouvelSortie = new Sortie();
+        /** @var Participant $participant */
+        $participant = $this->getUser();
+        $nouvelSortie->setOrganisateur($participant);
+        $nouvelSortie->setSiteOrganisateur($participant->getCampus());
+        $creationForm = $this->createForm(CreationSortieType::class, $nouvelSortie);
+        return $this->render('sortie/creation.html.twig',[
+            'creationForm' => $creationForm->createView()
+        ]);
+    }
 }
