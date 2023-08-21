@@ -36,7 +36,6 @@ class SortieRepository extends ServiceEntityRepository
             ->leftJoin('s.participants', 'p')
             ->addSelect('p');
 
-        $queryBuilder->groupBy('s.idSortie');
         $queryBuilder->orderBy('s.dateHeureDebut', 'ASC');
 
         //Sélection par campus

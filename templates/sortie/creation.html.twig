@@ -1,0 +1,14 @@
+{% block body %}
+    <div>
+        {{ form_start(creationForm)}}
+        {{ form_widget(creationForm) }}
+        <button>Enregistrement</button>
+        <button> validation</button>
+        <button>Annulation</button>
+        {{ form_end(creationForm)}}
+    </div>
+{% endblock %}
+
+{% block title %}
+    Create une nouvelle sortie | {{ parent() }}
+{% endblock %}
