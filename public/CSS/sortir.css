@@ -211,3 +211,8 @@ button{
     margin-right: 52px;
     margin-bottom: 2%;
 }
+
+#creation_sortie{
+    width: 30%;
+    margin-left: 35%;
+}
