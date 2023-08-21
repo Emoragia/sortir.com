@@ -11,14 +11,10 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class SortieEventSubscriber implements \Symfony\Component\EventDispatcher\EventSubscriberInterface
 {
-    private EtatRepository $etatRepository;
-    private EntityManagerInterface $entityManager;
-    private SortieRepository $sortieRepository;
-    public function __construct(EtatRepository $etatRepository, EntityManagerInterface $entityManager, SortieRepository $sortieRepository)
+
+    public function __construct(private readonly EtatRepository $etatRepository, private readonly EntityManagerInterface $entityManager, private readonly SortieRepository $sortieRepository)
     {
-        $this->etatRepository = $etatRepository;
-        $this->entityManager = $entityManager;
-        $this->sortieRepository = $sortieRepository;
+
     }
 
     public static function getSubscribedEvents(): array
@@ -30,6 +26,7 @@ class SortieEventSubscriber implements \Symfony\Component\EventDispatcher\EventS
 
         ];
     }
+    //TODO : créer une classe pour ce traitement à injecter dans la méthode du controller + appel méthode qu'elle contient
 
     /**
      * Met à jour l'état des sorties ouvertes et en corus  en fonction de la date du jour.
@@ -40,11 +37,9 @@ class SortieEventSubscriber implements \Symfony\Component\EventDispatcher\EventS
     {
         $today = new \DateTime('now');
         /** @var Sortie[] $sortiesOuvertes */
+        //TODO: créer méthode plus psécifique pour éviter les 'if' multiples dans le listener.
         $sortiesOuvertes = $this->sortieRepository->findSortiesByState('Ouverte');
-        /** @var Sortie[] $sortiesCloturees */
-        $sortiesCloturees = $this->sortieRepository->findSortiesByState('Clôturée');
-        /** @var Sortie[] $sortiesEnCours */
-        $sortiesEnCours = $this->sortieRepository->findSortiesByState('Activité en cours');
+
 //        dd($sortiesEnCours, $sortiesOuvertes);
 
         //On vérifie si les sorties ouvertes doivent  être 'Clôturée' ou être enregistrée comme 'Activité en cours'
@@ -67,6 +62,8 @@ class SortieEventSubscriber implements \Symfony\Component\EventDispatcher\EventS
                 }
             }
         }
+        /** @var Sortie[] $sortiesCloturees */
+        $sortiesCloturees = $this->sortieRepository->findSortiesByState('Clôturée');
         //On vérifie si les sorties clôturées doivent être enregistrées en 'Activité en cours'
         if(!empty($sortiesCloturees))
         {
@@ -81,6 +78,8 @@ class SortieEventSubscriber implements \Symfony\Component\EventDispatcher\EventS
                 }
             }
         }
+        /** @var Sortie[] $sortiesEnCours */
+        $sortiesEnCours = $this->sortieRepository->findSortiesByState('Activité en cours');
         //On vérifie si les sorties en cours doivent être enregistrées comme 'Passées'
         if(!empty($sortiesEnCours))
         {
@@ -96,6 +95,7 @@ class SortieEventSubscriber implements \Symfony\Component\EventDispatcher\EventS
                 }
             }
         }
+        //TODO : Ajouter état 'Historicisée'
     }
 
 

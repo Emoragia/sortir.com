@@ -7,6 +7,7 @@ use App\Entity\Sortie;
 use App\Event\SortieEvent;
 use App\Event\SortieEventSubscriber;
 use App\Form\AnnulerSortieType;
+use App\Form\CreationSortieType;
 use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,6 +16,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class SortieController extends AbstractController
 {
@@ -111,12 +113,13 @@ class SortieController extends AbstractController
         SortieRepository $sortieRepository,
         EtatRepository $etatRepository,
         int $id,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        EventDispatcherInterface $dispatcher,
     ):Response
     {
-        $dispatcher = new EventDispatcher();
-        $subscriber = new SortieEventSubscriber($etatRepository, $entityManager, $sortieRepository);
-        $dispatcher->addSubscriber($subscriber);
+//        $dispatcher = new EventDispatcher();
+//        $subscriber = new SortieEventSubscriber($etatRepository, $entityManager, $sortieRepository);
+//        $dispatcher->addSubscriber($subscriber);
         $sortie = $sortieRepository->find($id);
         /** @var Participant $participant */
         $participant = $this->getUser();
