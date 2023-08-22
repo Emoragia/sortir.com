@@ -38,9 +38,23 @@ class SortieController extends AbstractController
         //TODO: renvoi vers une page modifier.html.twig
     }
 
-    #[Route('/sorties/supprimer', name: 'sortie_supprimer', methods: ['GET, DELETE'])]
-    public function supprimerSortie(){
-        //TODO : renvoi vers la page d'accueil
+    #[Route('/sorties/supprimer/{id}', name: 'sortie_supprimer', requirements: ['id' => '\d+'], methods: ['GET', 'DELETE'])]
+    public function supprimerSortie(int $id,
+                                    SortieRepository $sortieRepository,
+                                    EntityManagerInterface $entityManager): Response
+    {
+        $sortie = $sortieRepository->find($id);
+        if($sortie->getEtat()->getLibelle() == 'Créée')
+        {
+            $entityManager->remove($sortie);
+            $entityManager->flush();
+            $this->addFlash('success', 'La sortie a été supprimée.');
+        }
+        else
+        {
+            $this->addFlash('danger', 'La sortie ne peut pas être supprimée.');
+        }
+        return $this->redirectToRoute('main_accueil');
     }
     #[Route('/sorties/annuler/{id}', name: 'sortie_annuler', requirements: ['id' => '\d+'], methods: ['GET','POST'])]
     public function annulerSortie(

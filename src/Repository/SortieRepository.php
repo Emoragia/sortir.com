@@ -96,19 +96,6 @@ class SortieRepository extends ServiceEntityRepository
         $query = $queryBuilder->getQuery();
         return $query->getResult();
     }
-    public function findSortiesByState(string $etat): array
-    {
-        $queryBuilder = $this->createQueryBuilder('s');
-        $queryBuilder->innerJoin('s.etat', 'e')
-            ->addSelect('e');
-
-        $queryBuilder->andWhere('e.libelle = :etat')
-                ->setParameter('etat', $etat);
-
-        $query = $queryBuilder->getQuery();
-        return $query->getResult();
-
-    }
 
     public function findSortiesByStateAndDate(string $etat): array
     {
@@ -147,5 +134,4 @@ class SortieRepository extends ServiceEntityRepository
         return $query->getResult();
 
     }
-
 }
