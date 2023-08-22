@@ -62,14 +62,14 @@
                                 <a href="#">Modifier</a>
                                 <a href="#">Publier</a>
                             {% elseif sortie.etat.libelle in ['Ouverte', 'Clôturée'] %}
-                                <a href="#">Afficher</a>
+                                <a href="{{ path('sortie_details' , {'id':sortie.id}) }}">Afficher</a>
                                 <a href="{{ path('sortie_annuler', {'id':sortie.id}) }}">Annuler</a>
                             {% else %}
-                                <a href="#">Afficher</a>
+                                <a href="{{ path('sortie_details' , {'id':sortie.id}) }}">Afficher</a>
                             {% endif %}
                         {% else %}
                             {% if sortie.etat.libelle in ['Ouverte','Activité en cours','Passée', 'Clôturée'] %}
-                                <a href="#">Afficher</a>
+                                <a href="{{ path('sortie_details' , {'id':sortie.id}) }}">Afficher</a>
                                 {% if sortie.etat.libelle in ['Ouverte', 'Clôturée'] and sortie.participants.contains(app.user) %}
                                     <a href="{{ path('sortie_desistement', {'id':sortie.id}) }}" title="Se désister">Se désister</a>
                                 {% elseif sortie.etat.libelle == 'Ouverte' and sortie.participants.count<sortie.nbInscriptionsMax %}

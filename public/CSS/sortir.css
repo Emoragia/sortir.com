@@ -47,7 +47,6 @@
 }
 
 .container_filter_accueil{
-    width: 100%;
     width: 31%;
     margin-left: 2%;
 }
@@ -119,30 +118,17 @@
 
 .title_tableau{
     background-color: #80808061;
-    margin-bottom: 0%;
 }
 
 .result1_tableau{
     background-color: #8080803b;
-    margin-bottom: 0%;
     height: 35px;
     padding-top: 4px;
 }
 
 .Nom_de_la_sortie p{
-    margin-bottom: 0%;
     height: 35px;
     padding-top: 4px;
-}
-
-button{
-    margin-top: 10px;
-    margin-left: 2%;
-    width: 15%;
-    height: 60px;
-    background-color: blue;
-    border-radius: 10px;
-    color: white;
 }
 
 .btn_create_sortie input[type=submit]:hover{
@@ -212,7 +198,29 @@ button{
     margin-bottom: 2%;
 }
 
+label{
+    /*display: block;*/
+    margin-left: 5rem;
+    margin-right: 0.5rem;
+
+}
+input, textarea, select {
+    box-sizing: border-box;
+    margin-bottom: 1rem;
+    width: 10%;
+}
+
 #creation_sortie{
     width: 30%;
     margin-left: 35%;
+}
+.flash {
+    padding: 20px;
+    font-weight: bold;
+    font-size: 1.4rem;
+    margin: 1rem 0;
+    border-radius: 5px;
+}
+.flash-success {
+    background-color: lawngreen;
 }

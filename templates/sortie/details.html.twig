@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil{% endblock %}
+
+{% block body %}
+    <div class="container mx-auto p-5" style="width: 50%">
+        <div class="card text-center shadow">
+            <div class="row">
+                <div class="col-md-4 align-self-center">
+                    <img src="{{ asset('images/user.png') }}" class="rounded-start" alt="logo_user " style="width: 210px">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">sortie</h5>
+                        <p><strong>Nom de la sortie: </strong>{{ sortieConsulte.nom }}</p>
+                        <p><strong>Date de la sortie : </strong>{{ sortieConsulte.dateHeureDebut | date('d/m/Y - H:m')}}</strong></p>
+                        <p><strong>Date limite de l'inscription : </strong>{{ sortieConsulte.dateLimiteInscription | date('d/m/Y') }}</p>
+                        <p><strong>Nombre de place : </strong>{{ sortieConsulte.nbInscriptionsMax }}</p>
+                        <p><strong>Durée :  </strong>{{ sortieConsulte.duree }}</p>
+                        <p><strong>Campus : </strong>{{ sortieConsulte.siteOrganisateur }}</p>
+                        <p><strong>Lieu : </strong>{{ sortieConsulte.lieu }}</strong></p>
+                        <a href="{{ path('main_accueil') }}"><button type="button">Retour</button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -5,14 +5,12 @@ namespace App\Controller;
 use App\Entity\Participant;
 use App\Entity\Sortie;
 use App\Event\SortieEvent;
-use App\Event\SortieEventSubscriber;
 use App\Form\AnnulerSortieType;
 use App\Form\CreationSortieType;
 use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,9 +26,11 @@ class SortieController extends AbstractController
     
 
     #[Route('/sorties/details/{id}', name: 'sortie_details', requirements: ['id' => '\d+'], methods: ["GET"])]
-    public function afficherSortie(): Response{
-
-        return $this->render('main/accueil.html.twig');
+    public function afficherSortie(int $id, SortieRepository $sortieRepository): Response{
+        $sortieConsulte = $sortieRepository->find($id);
+        return $this->render('sortie/details.html.twig', [
+            'sortieConsulte'=>$sortieConsulte
+        ]);
     }
 
     #[Route('/sorties/modifier', name: 'sortie_modifier', methods: ['GET', 'POST'])]
@@ -136,16 +136,33 @@ class SortieController extends AbstractController
 
         return $this->redirectToRoute('main_accueil');
     }
+
     #[Route('/sorties/creation', name: 'sortie_creation', methods: ['GET','POST'])]
-    public function creationSortie(): Response
+    public function creationSortie(Request $request, EntityManagerInterface $entityManager, EtatRepository $etatRepository): Response
     {
 
+        /**
+         * @var Participant $participant
+         * */
+
         $nouvelSortie = new Sortie();
-        /** @var Participant $participant */
         $participant = $this->getUser();
         $nouvelSortie->setOrganisateur($participant);
         $nouvelSortie->setSiteOrganisateur($participant->getCampus());
+        $nouvelSortie->setEtat($etatRepository->findOneBy(['libelle'=>'Créée']));
         $creationForm = $this->createForm(CreationSortieType::class, $nouvelSortie);
+        $creationForm-> handleRequest($request);
+
+
+        if ($creationForm->isSubmitted() && $creationForm->isValid()){
+
+            $entityManager->persist($nouvelSortie);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'votre sortie est enregistrée');
+            return $this->redirectToRoute('main_accueil');
+        }
+
         return $this->render('sortie/creation.html.twig',[
             'creationForm' => $creationForm->createView()
         ]);

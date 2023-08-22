@@ -6,10 +6,10 @@ use App\Entity\{Campus, Lieu, Sortie};
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -38,22 +38,17 @@ class CreationSortieType extends AbstractType
                 'required'=>true
             ])
 
-            ->add('nbInscriptionsMax',TextType::class,[
+            ->add('nbInscriptionsMax', NumberType::class,[
                 'label'=>'Nombre de place : ',
+                'data'=> 4,
+                'html5'=> true,
                 'required'=>true
             ])
 
-            ->add('duree', ChoiceType::class,[
+            ->add('duree', NumberType::class,[
                 'label'=>'Durée : ',
-                'choices'=>[
-                    30=>'30 min',
-                    60=>'60 min',
-                    90=>'90 min',
-                    120=>'120 min',
-                    150=>'150 min',
-                    180=>'180 min'
-                ],
-                'multiple'=>false,
+                'data'=> 30,
+                'html5'=> true,
                 'required'=>true
             ])
 
@@ -67,10 +62,10 @@ class CreationSortieType extends AbstractType
                 'disabled'=>true
             ])
 
-            ->add('participants',TextType::class,[
-                'label'=> 'Participants : ',
-                'required'=>true
-            ])
+        //   ->add('participants',TextType::class,[
+        //       'label'=> 'Participants : ',
+        //      'required'=>true
+        //    ])
 
             ->add('lieu', EntityType::class,[
                 'label'=> 'Lieu : ',
@@ -85,7 +80,7 @@ class CreationSortieType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Sortie::class,
-            'campus' => Campus::class ,
+            'campus' => Campus::class
         ]);
     }
 }
