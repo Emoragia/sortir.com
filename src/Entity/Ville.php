@@ -57,4 +57,20 @@ class Ville
 
         return $this;
     }
+
+    /**
+     * @return Collection
+     */
+    public function getLieux(): Collection
+    {
+        return $this->lieux;
+    }
+
+    /**
+     * @param Collection $lieux
+     */
+    public function setLieux(Collection $lieux): void
+    {
+        $this->lieux = $lieux;
+    }
 }
