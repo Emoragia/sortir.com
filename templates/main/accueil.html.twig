@@ -68,7 +68,7 @@
                                 <a href="#">Afficher</a>
                             {% endif %}
                         {% else %}
-                            {% if sortie.etat.libelle in ['Ouverte','En cours','Passée', 'Clôturée'] %}
+                            {% if sortie.etat.libelle in ['Ouverte','Activité en cours','Passée', 'Clôturée'] %}
                                 <a href="#">Afficher</a>
                                 {% if sortie.etat.libelle in ['Ouverte', 'Clôturée'] and sortie.participants.contains(app.user) %}
                                     <a href="{{ path('sortie_desistement', {'id':sortie.id}) }}" title="Se désister">Se désister</a>
