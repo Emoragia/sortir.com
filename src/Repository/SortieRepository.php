@@ -89,7 +89,7 @@ class SortieRepository extends ServiceEntityRepository
         //TODO : ajouter que GETDATE() - s.dateHeureDebut <= 1 mois
         else
         {
-                $queryBuilder->andWhere('e.libelle IN (\'Ouverte\', \'En cours\', \'Créée\', \'Clôturée\')');
+                $queryBuilder->andWhere('e.libelle IN (\'Ouverte\', \'Activité en cours\', \'Créée\', \'Clôturée\')');
         }
 
 
@@ -104,6 +104,44 @@ class SortieRepository extends ServiceEntityRepository
 
         $queryBuilder->andWhere('e.libelle = :etat')
                 ->setParameter('etat', $etat);
+
+        $query = $queryBuilder->getQuery();
+        return $query->getResult();
+
+    }
+
+    public function findSortiesByStateAndDate(string $etat): array
+    {
+        $today = new \DateTime('now');
+        $queryBuilder = $this->createQueryBuilder('s');
+        $queryBuilder->innerJoin('s.etat', 'e')
+            ->addSelect('e');
+
+        $queryBuilder->andWhere('e.libelle = :etat')
+            ->setParameter('etat', $etat);
+
+        switch ($etat)
+        {
+            case 'Ouverte':
+                $queryBuilder->andWhere('s.dateLimiteInscription <= :today')
+                    ->setParameter('today', $today);
+                break;
+            case 'Clôturée':
+                $queryBuilder->andWhere('s.dateHeureDebut <= :today')
+                    ->setParameter('today', $today);
+                break;
+            case 'Activité en cours':
+                $queryBuilder->andWhere('DATE_DIFF(:today,s.dateHeureDebut) >= 1')
+                    ->setParameter('today', $today);
+                break;
+            case 'Annulée':
+            case 'Passée':
+                $queryBuilder->andWhere('DATE_DIFF(:today,s.dateHeureDebut) >= 31')
+                    ->setParameter('today', $today);
+                break;
+            default:
+                break;
+        }
 
         $query = $queryBuilder->getQuery();
         return $query->getResult();
