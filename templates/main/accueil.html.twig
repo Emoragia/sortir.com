@@ -26,7 +26,7 @@
                     <div class="mb-3">{{ form_row(rechercheForm.nonInscrit) }}</div>
                     <div class="mb-3">{{ form_row(rechercheForm.sortiesPassees) }}</div>
                 </div>
-                <button type="submit" class="btn btn-primary">Rechercher</button>
+                <button type="submit" class="btn btn-primary btn-sm">Rechercher</button>
                 {{ form_end(rechercheForm) }}
             </div>
 
@@ -60,7 +60,7 @@
                         {% if sortie.organisateur == app.user%}
                             {% if sortie.etat.libelle == 'Créée' %}
                                 <a href="#">Modifier</a>
-                                <a href="#">Publier</a>
+                                <a href="{{ path('sortie_publier', {'id':sortie.id}) }}">Publier</a>
                             {% elseif sortie.etat.libelle in ['Ouverte', 'Clôturée'] %}
                                 <a href="{{ path('sortie_details' , {'id':sortie.id}) }}">Afficher</a>
                                 <a href="{{ path('sortie_annuler', {'id':sortie.id}) }}">Annuler</a>

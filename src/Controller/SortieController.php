@@ -18,14 +18,32 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class SortieController extends AbstractController
 {
-    #[Route('/sorties', name: 'sortie_list', methods: 'GET')]
-    public function list(): Response
+    #[Route('/sorties/publier/{id}', name: 'sortie_publier', requirements: ['id' => '\d+'], methods: ['POST'])]
+    public function publierSortie(Request $request,
+                                  int $id,
+                                  SortieRepository $sortieRepository,
+                                  EtatRepository $etatRepository,
+                                  EntityManagerInterface $entityManager): Response
     {
-        return $this->render('main/accueil.html.twig');
+        $publier = $sortieRepository->find($id);
+        $publierForm = $this->createForm(CreationSortieType::class, $publier);
+        $publierForm ->handleRequest($request);
+        if ($publierForm->isSubmitted() && $publierForm->isValid()){
+            if ($publier->getEtat()->getLibelle() !='créée'){
+                $publier->setEtat($etatRepository->findOneBy(['libelle'=>'Ouverte']));
+                $entityManager->persist($publier);
+                $entityManager->flush();
+                $this->addFlash('success', 'La sortie a bien été publié');
+            }
+        }
+
+        return $this->render('main/accueil.html.twig',[
+            'publierForm' => $publierForm->createView()
+        ]);
     }
     
 
-    #[Route('/sorties/details/{id}', name: 'sortie_details', requirements: ['id' => '\d+'], methods: ["GET"])]
+    #[Route('/sorties/details/{id}', name: 'sortie_details', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function afficherSortie(int $id, SortieRepository $sortieRepository): Response{
         $sortieConsulte = $sortieRepository->find($id);
         return $this->render('sortie/details.html.twig', [
