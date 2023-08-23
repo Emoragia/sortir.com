@@ -24,7 +24,7 @@
                             </tr>
                             </thead>
                             <tbody class="table-group-divider">
-                                {%for participant in sortieConsulte.participants%}
+                                {% for participant in sortieConsulte.participants %}
                                     <td>{{ participant.pseudo }}</td>
                                     <td><a href="{{ path('profil_details', {'id': participant.id}) }}">{{ participant.nom }}</a></td>
                                 {% endfor %}
