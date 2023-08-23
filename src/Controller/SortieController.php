@@ -8,6 +8,7 @@ use App\Event\SortieEvent;
 use App\Form\AnnulerSortieType;
 use App\Form\CreationSortieType;
 use App\Repository\EtatRepository;
+use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -42,7 +43,12 @@ class SortieController extends AbstractController
     
 
     #[Route('/sorties/details/{id}', name: 'sortie_details', requirements: ['id' => '\d+'], methods: ['GET'])]
-    public function afficherSortie(int $id, SortieRepository $sortieRepository): Response{
+    public function afficherSortie(int $id,
+                                   Request $request,
+                                   SortieRepository $sortieRepository): Response{
+        /**
+         * @var Participant $participant
+         * */
         $sortieConsulte = $sortieRepository->find($id);
         return $this->render('sortie/details.html.twig', [
             'sortieConsulte'=>$sortieConsulte
@@ -168,7 +174,9 @@ class SortieController extends AbstractController
     }
 
     #[Route('/sorties/creation', name: 'sortie_creation', methods: ['GET','POST'])]
-    public function creationSortie(Request $request, EntityManagerInterface $entityManager, EtatRepository $etatRepository): Response
+    public function creationSortie(Request $request,
+                                   EntityManagerInterface $entityManager,
+                                   EtatRepository $etatRepository): Response
     {
 
         /**
