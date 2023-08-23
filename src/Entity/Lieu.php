@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\LieuRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: LieuRepository::class)]
@@ -12,6 +13,7 @@ class Lieu
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(name: 'id')]
+    #[Groups(['liste_lieu'])]
     private ?int $idLieu = null;
 
     #[Assert\Regex('/^\w+/')]
@@ -23,6 +25,7 @@ class Lieu
     )]
     #[Assert\NotBlank(message:'Renseignez un nom s\'il vous plaît')]
     #[ORM\Column(length: 80)]
+    #[Groups(['liste_lieu'])]
     private ?string $nom = null;
 
     #[Assert\Regex('/^\w+/')]
@@ -34,23 +37,26 @@ class Lieu
     )]
     #[Assert\NotBlank(message:'Renseignez la rue s\'il vous plaît')]
     #[ORM\Column(length: 150)]
+    #[Groups(['liste_lieu'])]
     private ?string $rue = null;
 
     #[Assert\Regex('/^-?\d+[\,\.]\d+$/')]
     #[Assert\Length(max: 255,maxMessage: 'Ce champ ne peut dépasser 255 caractères.')]
     #[ORM\Column(nullable: true)]
+    #[Groups(['liste_lieu'])]
     private ?float $latitude = null;
 
     #[Assert\Regex('/^-?\d+[\,\.]\d+&/')]
     #[Assert\Length(max: 255,maxMessage: 'Ce champ ne peut dépasser 255 caractères.')]
     #[ORM\Column(nullable: true)]
+    #[Groups(['liste_lieu'])]
     private ?float $longitude = null;
 
     #[ORM\ManyToOne(targetEntity: Ville::class, inversedBy: 'lieux')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Ville $ville = null;
 
-    public function getId(): ?int
+    public function getIdLieu(): ?int
     {
         return $this->idLieu;
     }

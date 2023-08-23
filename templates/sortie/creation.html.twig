@@ -15,8 +15,40 @@
         <a href="{{ path('main_accueil') }}" class="btn btn-primary ">Annuler</a>
         {{ form_end(creationForm)}}
     </div>
+    <script>
+        //Récupération dynamique des lieux en fonction du choix de la ville.
+
+
+        const form_select_ville = document.getElementById('creation_sortie_ville');
+        const form_select_lieu = document.getElementById('creation_sortie_lieu');
+
+        //Fonction à appeler lorsque l'utilisateur.ice sélectionne une ville:
+        const changeOptions = async (e) => {
+            form_select_lieu.innerHTML='<option value="">--Sélectionnez un lieu--</option>';
+            if(e.target.value)
+            {
+                const id = e.target.value;
+                const url= window.location.href + `/ville/${id}`
+                const response = await fetch (url);
+                const lieux = await response.json();
+                //Ajout des options pour la balise select du champ lieu.
+                lieux.forEach((lieu) => form_select_lieu.innerHTML += `<option value="${lieu.idLieu}">${lieu.nom}</option>`);
+                form_select_lieu.disabled = false;
+            }
+            else
+            {
+                form_select_lieu.disabled = true;
+            }
+
+        };
+
+        //Ajout d'un listerner sur la baLise select du champ ville appelant la méthode changeOptions
+        form_select_ville.addEventListener('change', (e) => changeOptions(e));
+
+    </script>
 {% endblock %}
 
 {% block title %}
     Create une nouvelle sortie
 {% endblock %}
+

@@ -10,8 +10,10 @@ use App\Form\CreationSortieType;
 use App\Repository\EtatRepository;
 use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
+use App\Repository\VilleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -206,5 +208,12 @@ class SortieController extends AbstractController
         ]);
     }
 
-    
+    #[Route('/sorties/creation/ville/{id}', name:'sortie_getLieux',  requirements: ['id' => '\d+'], methods: ["GET"])]
+    public function getLieux(int $id, VilleRepository $villeRepository):Response
+    {
+        $ville = $villeRepository->find($id);
+        $lieux = $ville->getLieux();
+        return $this->json($lieux, Response::HTTP_OK, [], ['groups'=>'liste_lieu']);
+    }
+
 }

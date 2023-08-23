@@ -1,16 +1,20 @@
 <?php
 
 namespace App\Form;
-use App\Entity\{Campus, Lieu, Sortie};
+use App\Entity\{Campus, Lieu, Sortie, Ville};
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CreationSortieType extends AbstractType
@@ -62,18 +66,56 @@ class CreationSortieType extends AbstractType
                 'disabled'=>true
             ])
 
-        //   ->add('participants',TextType::class,[
-        //       'label'=> 'Participants : ',
-        //      'required'=>true
-        //    ])
+            ->add('ville', EntityType::class, [
+                'mapped'=>false,
+                'label'=>'Ville :',
+                'class'=>Ville::class,
+                'choice_label'=>'nom',
+                'placeholder'=>'--Sélectionnez une ville--',
+                'choice_value'=> function (?Ville $ville){
+                    return $ville ? $ville->getId() : '';
+                },
+                'required'=>true,
+            ]);
 
-            ->add('lieu', EntityType::class,[
+//            ->add('lieu', EntityType::class,[
+//                'label'=> 'Lieu : ',
+//                'class'=> Lieu::class,
+//                'choice_label'=> 'nom',
+//                'placeholder'=>'--Sélectionnez lieux--',
+//                'required'=>true
+//            ]);
+        $formModifier = function (FormInterface $form, Ville $ville = null): void
+        {
+            $lieux = null === $ville ? [] : $ville->getLieux();
+            $form->add('lieu', EntityType::class, [
                 'label'=> 'Lieu : ',
                 'class'=> Lieu::class,
-                'choice_label'=> 'nom',
-                'placeholder'=>'tous les lieux',
-                'required'=>true
+                'placeholder'=>'--Sélectionnez un lieu--',
+                'choices'=>$lieux,
+//                'attr'=>['id'=>'sortie_lieu'],
             ]);
+        };
+    //Utile que s'il y a une ville à renseigner
+        $builder->addEventListener(
+            FormEvents::PRE_SET_DATA,
+            function (FormEvent $event) use ($formModifier): void
+            {
+                $form = $event->getForm();
+                $ville = $form['ville']->getData();
+                $formModifier($form, $ville);
+            }
+        );
+        $builder->get('ville')->addEventListener(
+            FormEvents::POST_SUBMIT,
+            function(FormEvent $event) use ($formModifier): void
+            {
+                $ville = $event->getForm()->getData();
+//                $ville = $form['ville']->getData();
+                $formModifier($event->getForm()->getParent(), $ville);
+            }
+        );
+        $builder->setAction($options['action']);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
