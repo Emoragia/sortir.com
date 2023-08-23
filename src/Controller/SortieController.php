@@ -18,28 +18,20 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class SortieController extends AbstractController
 {
-    #[Route('/sorties/publier/{id}', name: 'sortie_publier', requirements: ['id' => '\d+'], methods: ['POST'])]
-    public function publierSortie(Request $request,
-                                  int $id,
+    #[Route('/sorties/publier/{id}', name: 'sortie_publier', requirements: ['id' => '\d+'], methods: ['GET'])]
+    public function publierSortie(int $id,
                                   SortieRepository $sortieRepository,
                                   EtatRepository $etatRepository,
                                   EntityManagerInterface $entityManager): Response
     {
         $publier = $sortieRepository->find($id);
-        $publierForm = $this->createForm(CreationSortieType::class, $publier);
-        $publierForm ->handleRequest($request);
-        if ($publierForm->isSubmitted() && $publierForm->isValid()){
             if ($publier->getEtat()->getLibelle() !='créée'){
                 $publier->setEtat($etatRepository->findOneBy(['libelle'=>'Ouverte']));
                 $entityManager->persist($publier);
                 $entityManager->flush();
                 $this->addFlash('success', 'La sortie a bien été publié');
             }
-        }
-
-        return $this->render('main/accueil.html.twig',[
-            'publierForm' => $publierForm->createView()
-        ]);
+        return $this->redirectToRoute('main_accueil');
     }
     
 
