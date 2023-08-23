@@ -25,12 +25,18 @@ class SortieController extends AbstractController
                                   EntityManagerInterface $entityManager): Response
     {
         $sortieAPublier = $sortieRepository->find($id);
+        $today = new \DateTime('now');
+        if ($sortieAPublier -> getDateLimiteInscription() >= $today && $sortieAPublier->getDateHeureDebut() >= $today ){
             if ($sortieAPublier->getEtat()->getLibelle() =='Créée'){
                 $sortieAPublier->setEtat($etatRepository->findOneBy(['libelle'=>'Ouverte']));
                 $entityManager->persist($sortieAPublier);
                 $entityManager->flush();
                 $this->addFlash('success', 'La sortie a bien été publié');
             }
+        }else{
+            $this->addFlash('warning', 'la date inscription ou la date de sortie est dépassé ');
+        }
+
         return $this->redirectToRoute('main_accueil');
     }
     
