@@ -24,10 +24,10 @@ class SortieController extends AbstractController
                                   EtatRepository $etatRepository,
                                   EntityManagerInterface $entityManager): Response
     {
-        $publier = $sortieRepository->find($id);
-            if ($publier->getEtat()->getLibelle() !='créée'){
-                $publier->setEtat($etatRepository->findOneBy(['libelle'=>'Ouverte']));
-                $entityManager->persist($publier);
+        $sortieAPublier = $sortieRepository->find($id);
+            if ($sortieAPublier->getEtat()->getLibelle() =='Créée'){
+                $sortieAPublier->setEtat($etatRepository->findOneBy(['libelle'=>'Ouverte']));
+                $entityManager->persist($sortieAPublier);
                 $entityManager->flush();
                 $this->addFlash('success', 'La sortie a bien été publié');
             }
