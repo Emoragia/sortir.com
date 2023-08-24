@@ -12,7 +12,6 @@
             <div class="card-body">
                 {{ form_start(annulerForm) }}
                 {{ form_widget(annulerForm) }}
-                {#    TODO : ajouter du JS pour intercépter la submission et demander à l'utilisateur.ice s'il souhaite vraiment annuler#}
                 <button type="submit">Enregistrer</button>
                 <a href="{{ path('main_accueil') }}"><button type="button">Annuler</button></a>
 
@@ -20,4 +19,10 @@
             </div>
         </div>
     </div>
+    <script>
+        const form = document.querySelector('form');
+        form.addEventListener("submit", ()=>{
+            confirm("Êtes-vous sûr.e de vouloir annuler cette sortie ?")
+        })
+    </script>
 {% endblock %}

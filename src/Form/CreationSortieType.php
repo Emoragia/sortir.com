@@ -78,13 +78,6 @@ class CreationSortieType extends AbstractType
                 'required'=>true,
             ]);
 
-//            ->add('lieu', EntityType::class,[
-//                'label'=> 'Lieu : ',
-//                'class'=> Lieu::class,
-//                'choice_label'=> 'nom',
-//                'placeholder'=>'--Sélectionnez lieux--',
-//                'required'=>true
-//            ]);
         $formModifier = function (FormInterface $form, Ville $ville = null): void
         {
             $lieux = null === $ville ? [] : $ville->getLieux();
@@ -93,10 +86,9 @@ class CreationSortieType extends AbstractType
                 'class'=> Lieu::class,
                 'placeholder'=>'--Sélectionnez un lieu--',
                 'choices'=>$lieux,
-//                'attr'=>['id'=>'sortie_lieu'],
             ]);
         };
-    //Utile que s'il y a une ville à renseigner
+    //Utile surtout s'il y a une ville à renseigner
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
             function (FormEvent $event) use ($formModifier): void
@@ -111,18 +103,15 @@ class CreationSortieType extends AbstractType
             function(FormEvent $event) use ($formModifier): void
             {
                 $ville = $event->getForm()->getData();
-//                $ville = $form['ville']->getData();
                 $formModifier($event->getForm()->getParent(), $ville);
             }
         );
-        $builder->setAction($options['action']);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Sortie::class,
-            'campus' => Campus::class
         ]);
     }
 }
