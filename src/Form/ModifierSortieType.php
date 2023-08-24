@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Lieu;
 use App\Entity\Sortie;
+use App\Entity\Ville;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -68,10 +69,16 @@ class ModifierSortieType extends AbstractType
                 'disabled'=>true
             ])
 
-            //   ->add('participants',TextType::class,[
-            //       'label'=> 'Participants : ',
-            //      'required'=>true
-            //    ])
+            ->add('ville', EntityType::class, [
+                'mapped'=>false,
+                'label'=>'Ville :',
+                'class'=>Ville::class,
+                'choice_label'=>'nom',
+                'placeholder'=>'--Sélectionnez une ville--',
+                'choice_value'=> function (?Ville $ville){
+                    return $ville ? $ville->getId() : '';
+                }
+            ])
 
             ->add('lieu', EntityType::class,[
                 'label'=> 'Lieu : ',
@@ -88,6 +95,7 @@ class ModifierSortieType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Sortie::class,
+            'ville'=> ville::class,
         ]);
     }
 }

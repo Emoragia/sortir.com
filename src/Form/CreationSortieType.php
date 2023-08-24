@@ -1,12 +1,11 @@
 <?php
 
 namespace App\Form;
-use App\Entity\{Campus, Lieu, Sortie, Ville};
+use App\Entity\{ Lieu, Sortie, Ville};
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -74,8 +73,7 @@ class CreationSortieType extends AbstractType
                 'placeholder'=>'--Sélectionnez une ville--',
                 'choice_value'=> function (?Ville $ville){
                     return $ville ? $ville->getId() : '';
-                },
-                'required'=>true,
+                }
             ]);
 
         $formModifier = function (FormInterface $form, Ville $ville = null): void

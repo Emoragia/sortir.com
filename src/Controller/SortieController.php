@@ -57,16 +57,16 @@ class SortieController extends AbstractController
         ]);
     }
 
-    #[Route('/sorties/modifier', name: 'sortie_modifier', methods: ['GET', 'POST'])]
+    #[Route('/sorties/modifier/{id}', name: 'sortie_modifier', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function modifierSortie(Request $request,
+                                   int $id,
                                    SortieRepository $sortieRepository,
                                    EntityManagerInterface $entityManager){
-        /**
-         * @var Ville $ville
-         **/
-        $ville = $this->getNom();
 
-        $entityManager->persist();
+        $sortieAModifier = $sortieRepository->find($id);
+        $ville = $sortieAModifier->getLieu()->getVille();
+
+        $entityManager->persist($sortieAModifier);
         $entityManager->flush();
         $this ->addFlash('success', 'Votre sortie est bien modifier');
     }
