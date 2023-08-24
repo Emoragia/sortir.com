@@ -62,7 +62,8 @@ class SortieController extends AbstractController
     public function modifierSortie(Request $request,
                                    int $id,
                                    SortieRepository $sortieRepository,
-                                   EntityManagerInterface $entityManager){
+                                   EntityManagerInterface $entityManager): Response
+    {
 
         $sortieAModifier = $sortieRepository->find($id);
         $ville = $sortieAModifier->getLieu()->getVille();
@@ -71,13 +72,17 @@ class SortieController extends AbstractController
         $modifierForm ->handleRequest($request);
 
         if($modifierForm->isSubmitted() && $modifierForm->isValid()){
+           try{
+               $entityManager->persist($sortieAModifier);
+               $entityManager->flush();
+               $this ->addFlash('success', 'Votre sortie est bien modifier');
+               return $this->redirectToRoute('main_accueil');
+           }
+           catch (\Exception $e)
+            {
+                $this->addFlash('danger', 'La modification n\'est pas permise');
+            }
 
-            $entityManager->persist($sortieAModifier);
-            $entityManager->flush();
-            $this ->addFlash('success', 'Votre sortie est bien modifier');
-            return $this->redirectToRoute('main_accueil');
-        }else{
-            $this->addFlash('danger', 'La modification n\'est pas permise');
         }
         return $this->render('sortie/modifierSortie.html.twig',[
                 'modifierForm'=>$modifierForm->createView()

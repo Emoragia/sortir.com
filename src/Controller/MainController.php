@@ -23,6 +23,7 @@ class MainController extends AbstractController
     {
         //Appel de la fonction du GestionnaireEtat permettant de mettre à jour l'état des sorties
         $gestionnaireEtat->gererEtats();
+
         /** @var Participant $participant */
         $participant = $this->getUser();
         $data = new SortieRechercheData($participant);
