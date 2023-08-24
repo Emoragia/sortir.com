@@ -3,8 +3,6 @@
 namespace App\Repository;
 
 use App\Data\SortieRechercheData;
-use App\Entity\Campus;
-use App\Entity\Participant;
 use App\Entity\Sortie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -29,7 +27,6 @@ class SortieRepository extends ServiceEntityRepository
      */
     public function findSorties(SortieRechercheData $data): array
     {
-//        $participant = $data->participant;
         $queryBuilder = $this->createQueryBuilder('s');
         $queryBuilder->innerJoin('s.etat', 'e')
             ->addSelect('e')
@@ -67,6 +64,7 @@ class SortieRepository extends ServiceEntityRepository
                 ->setParameter('organisateur', $data->participant);
 
         }
+        //sélection selon statu inscrit.e/non inscrit.e
         if($data->inscrit && !$data->nonInscrit)
         {
             $queryBuilder->andWhere(':participant MEMBER OF s.participants')
@@ -85,8 +83,6 @@ class SortieRepository extends ServiceEntityRepository
         {
             $queryBuilder->andWhere('e.libelle = \'Passée\' AND DATE_DIFF(CURRENT_DATE(), s.dateHeureDebut) <= 31');
         }
-
-        //TODO : ajouter que GETDATE() - s.dateHeureDebut <= 1 mois
         else
         {
                 $queryBuilder->andWhere('e.libelle IN (\'Ouverte\', \'Activité en cours\', \'Créée\', \'Clôturée\')');

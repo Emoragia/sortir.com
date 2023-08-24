@@ -7,17 +7,30 @@
             </div>
         {% endfor %}
     {% endfor %}
-    <div>
-        {{ form_start(creationForm)}}
-        {{ form_widget(creationForm) }}
-        <button type="submit" class="btn btn-primary"style="margin-left: 35%;" >Enregistrer</button>
-        <button type="submit" class="btn btn-primary">Publier</button>
-        <a href="{{ path('main_accueil') }}" class="btn btn-primary ">Annuler</a>
-        {{ form_end(creationForm)}}
+    <div class="container text-center m-5 p-4">
+        <h2 class="Title_Profil">Créer une sortie</h2>
+        {{ form_start(creationForm) }}
+        {{ form_row(creationForm.nom) }}
+        {{ form_row(creationForm.dateHeureDebut) }}
+        {{ form_row(creationForm.dateLimiteInscription) }}
+        {{ form_row(creationForm.nbInscriptionsMax) }}
+        {{ form_row(creationForm.duree) }}
+        {{ form_row(creationForm.infosSortie) }}
+        {{ form_row(creationForm.siteOrganisateur) }}
+        {{ form_row(creationForm.ville) }}
+        {{ form_row(creationForm.lieu) }}
+        <div class="d-flex flex-row justify-content-center">
+            <div class="p-2">{{ form_row(creationForm.save) }}</div>
+            <div class="p-2">{{ form_row(creationForm.saveAndAdd) }}</div>
+            <div class="p-2"><a href="{{ path('main_accueil') }}" class="btn btn-primary">Annuler</a></div>
+            {{ form_end(creationForm) }}
+
+        </div>
     </div>
     <script>
-        //Récupération dynamique des lieux en fonction du choix de la ville.
-
+        /**
+         *  Récupération dynamique des lieux en fonction du choix de la ville.
+         */
 
         const form_select_ville = document.getElementById('creation_sortie_ville');
         const form_select_lieu = document.getElementById('creation_sortie_lieu');
@@ -49,6 +62,6 @@
 {% endblock %}
 
 {% block title %}
-    Create une nouvelle sortie
+    Créer une sortie
 {% endblock %}
 

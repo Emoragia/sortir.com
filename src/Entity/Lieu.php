@@ -41,13 +41,17 @@ class Lieu
     private ?string $rue = null;
 
     #[Assert\Regex('/^-?\d+[\,\.]\d+$/')]
-    #[Assert\Length(max: 255,maxMessage: 'Ce champ ne peut dépasser 255 caractères.')]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: 'Ce champ ne peut dépasser 255 caractères.')]
     #[ORM\Column(nullable: true)]
     #[Groups(['liste_lieu'])]
     private ?float $latitude = null;
 
     #[Assert\Regex('/^-?\d+[\,\.]\d+&/')]
-    #[Assert\Length(max: 255,maxMessage: 'Ce champ ne peut dépasser 255 caractères.')]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: 'Ce champ ne peut dépasser 255 caractères.')]
     #[ORM\Column(nullable: true)]
     #[Groups(['liste_lieu'])]
     private ?float $longitude = null;

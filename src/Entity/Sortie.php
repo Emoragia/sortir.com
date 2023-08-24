@@ -7,7 +7,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use phpDocumentor\Reflection\Types\This;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SortieRepository::class)]
@@ -37,6 +36,7 @@ class Sortie
 
 
     #[Assert\Positive(message: 'La durée doit être un nombre entier positif et supérieur à 0.')]
+    #[Assert\LessThanOrEqual(1440, message: 'La durée ne peut excéder 1440 minutes (24h).')]
     #[ORM\Column]
     private ?int $duree = null;
 
@@ -44,8 +44,7 @@ class Sortie
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $dateLimiteInscription = null;
 
-    #[Assert\Regex('/^[1-9]{1}\d?$/',
-    message: 'Le nombres de participant.e.s doit être compris entre 1 et 99')]
+    #[Assert\Regex('/^[1-9]{1}\d?$/', message: 'Le nombres de participant.e.s doit être compris entre 1 et 99')]
     #[ORM\Column]
     private ?int $nbInscriptionsMax = null;
 

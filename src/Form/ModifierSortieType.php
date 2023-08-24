@@ -14,6 +14,9 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ModifierSortieType extends AbstractType
@@ -82,21 +85,43 @@ class ModifierSortieType extends AbstractType
                 'data'=> $options ['ville']
             ])
 
-            ->add('lieu', EntityType::class,[
-                'label'=> 'Lieu : ',
-                'label_attr' => ['class' => 'lieu'],
-                'class'=> Lieu::class,
-                'choice_label'=> 'nom',
-                'placeholder'=>'tous les lieux',
-                'required'=>true
-            ])
             ->add('save', SubmitType::class,[
                 'label'=>'Enregistrer'
             ])
+
             ->add('saveAndAdd', SubmitType::class,[
                 'label'=>'Publier'
             ]);
-        ;
+
+
+        $formModifier = function (FormInterface $form, Ville $ville = null): void
+        {
+            $lieux = null === $ville ? [] : $ville->getLieux();
+            $form->add('lieu', EntityType::class, [
+                'label'=> 'Lieu : ',
+                'class'=> Lieu::class,
+                'placeholder'=>'--Sélectionnez un lieu--',
+                'choices'=>$lieux,
+            ]);
+        };
+
+        $builder->addEventListener(
+            FormEvents::PRE_SET_DATA,
+            function (FormEvent $event) use ($formModifier): void
+            {
+                $form = $event->getForm();
+                $ville = $form['ville']->getData();
+                $formModifier($form, $ville);
+            }
+        );
+        $builder->get('ville')->addEventListener(
+            FormEvents::POST_SUBMIT,
+            function(FormEvent $event) use ($formModifier): void
+            {
+                $ville = $event->getForm()->getData();
+                $formModifier($event->getForm()->getParent(), $ville);
+            }
+        );
     }
 
     public function configureOptions(OptionsResolver $resolver): void

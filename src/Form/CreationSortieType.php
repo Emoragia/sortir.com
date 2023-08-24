@@ -2,11 +2,11 @@
 
 namespace App\Form;
 use App\Entity\{ Lieu, Sortie, Ville};
-
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\AbstractType;
@@ -74,7 +74,13 @@ class CreationSortieType extends AbstractType
                 'choice_value'=> function (?Ville $ville){
                     return $ville ? $ville->getId() : '';
                 }
-            ]);
+            ])
+            ->add('save', SubmitType::class,[
+                'label'=>'Enregistrer'
+            ])
+            ->add('saveAndAdd', SubmitType::class,[
+                'label'=>'Publier une sortie'
+            ]);;
 
         $formModifier = function (FormInterface $form, Ville $ville = null): void
         {
@@ -86,7 +92,7 @@ class CreationSortieType extends AbstractType
                 'choices'=>$lieux,
             ]);
         };
-    //Utile surtout s'il y a une ville à renseigner
+
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
             function (FormEvent $event) use ($formModifier): void

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Profil{% endblock %}
+{% block title %}Sortie | Détails{% endblock %}
 
 {% block body %}
     <div class="container mx-auto p-5" style="width: 50%">
@@ -25,8 +25,10 @@
                             </thead>
                             <tbody class="table-group-divider">
                                 {% for participant in sortieConsulte.participants %}
-                                    <td>{{ participant.pseudo }}</td>
-                                    <td><a href="{{ path('profil_details', {'id': participant.id}) }}">{{ participant.nom }}</a></td>
+                                    <tr>
+                                        <td>{{ participant.pseudo }}</td>
+                                        <td><a href="{{ path('profil_details', {'id': participant.id}) }}">{{ participant.nom }}</a></td>
+                                    </tr>
                                 {% endfor %}
                             </tbody>
                         </table>

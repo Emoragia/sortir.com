@@ -1,17 +1,34 @@
 {% extends 'base.html.twig' %}
-{% block title %}Sortie !{% endblock %}
+{% block title %}Sortie | Modifier{% endblock %}
 
 {% block body %}
-    <h2 class="Title_Profil">{{ modifierForm.nom.vars.value }}</h2>
-    {{ form_start(modifierForm) }}
-    {{ form_widget(modifierForm) }}
-    <a href="{{ path('sortie_supprimer', {'id':  modifierForm.vars.data.id}) }}" class="btn btn-primary">Supprimer</a>
-    <a href="{{ path('main_accueil') }}" id="btn-title-profil" type="button" class="btn btn-primary">Annuler</a>
-    {{ form_end(modifierForm) }}
+    <div class="container text-center m-5 p-4">
+        <h2 class="Title_Profil">Créer une sortie</h2>
+        {{ form_start(modifierForm) }}
+        {{ form_row(modifierForm.nom) }}
+        {{ form_row(modifierForm.dateHeureDebut) }}
+        {{ form_row(modifierForm.dateLimiteInscription) }}
+        {{ form_row(modifierForm.nbInscriptionsMax) }}
+        {{ form_row(modifierForm.duree) }}
+        {{ form_row(modifierForm.infosSortie) }}
+        {{ form_row(modifierForm.siteOrganisateur) }}
+        {{ form_row(modifierForm.ville) }}
+        {{ form_row(modifierForm.lieu) }}
+        <div class="d-flex flex-row justify-content-center">
+            <div class="p-2">{{ form_row(modifierForm.save) }}</div>
+            <div class="p-2">{{ form_row(modifierForm.saveAndAdd) }}</div>
+            <div class="p-2"><a href="{{ path('sortie_supprimer', {'id':  modifierForm.vars.data.id}) }}" class="btn btn-primary">Supprimer</a></div>
+            <div class="p-2"><a href="{{ path('main_accueil') }}" class="btn btn-primary">Annuler</a></div>
+            {{ form_end(modifierForm) }}
+
+        </div>
+
+    </div>
 
     <script>
-        //Récupération dynamique des lieux en fonction du choix de la ville.
-
+        /**
+         * Récupération dynamique des lieux en fonction du choix de la ville.
+         */
 
         const form_select_ville = document.getElementById('modifier_sortie_ville');
         const form_select_lieu = document.getElementById('modifier_sortie_lieu');
@@ -38,6 +55,5 @@
 
         //Ajout d'un listerner sur la baLise select du champ ville appelant la méthode changeOptions
         form_select_ville.addEventListener('change', (e) => changeOptions(e));
-
     </script>
 {% endblock %}

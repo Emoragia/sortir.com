@@ -2,9 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Campus;
 use App\Entity\Participant;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -69,7 +67,6 @@ class ProfilType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Participant::class,
-//            "allow_extra_fields" => true,
         ]);
     }
 }

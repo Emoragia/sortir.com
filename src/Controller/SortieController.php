@@ -45,7 +45,6 @@ class SortieController extends AbstractController
 
     #[Route('/sorties/details/{id}', name: 'sortie_details', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function afficherSortie(int $id,
-                                   Request $request,
                                    SortieRepository $sortieRepository): Response{
         /**
          * @var Participant $participant
@@ -82,7 +81,7 @@ class SortieController extends AbstractController
            }
            catch (\Exception $e)
             {
-                $this->addFlash('danger', 'La modification n\'est pas permise');
+                $this->addFlash('danger', 'La modification n\'est pas permise pour cette sortie.');
             }
 
         }
@@ -111,10 +110,10 @@ class SortieController extends AbstractController
     }
     #[Route('/sorties/annuler/{id}', name: 'sortie_annuler', requirements: ['id' => '\d+'], methods: ['GET','POST'])]
     public function annulerSortie(Request $request,
-                                    int $id,
-                                    SortieRepository $sortieRepository,
-                                    EtatRepository $etatRepository,
-                                    EntityManagerInterface $entityManager): Response
+                                  int $id,
+                                  SortieRepository $sortieRepository,
+                                  EtatRepository $etatRepository,
+                                  EntityManagerInterface $entityManager): Response
     {
         $sortie = $sortieRepository->find($id);
         $today = new \DateTime('now');
@@ -143,8 +142,7 @@ class SortieController extends AbstractController
     public function inscrire(SortieRepository $sortieRepository,
                             int $id,
                             EntityManagerInterface $entityManager,
-                            EventDispatcherInterface $dispatcher,
-    ): Response
+                            EventDispatcherInterface $dispatcher): Response
     {
         $sortie = $sortieRepository->find($id);
         /** @var Participant $participant */
@@ -167,16 +165,13 @@ class SortieController extends AbstractController
         {
             $this->addFlash('warning', 'Votre inscription n\'a pas pu être prise en compte (l\'organisateur.ice a annulé la sortie, le nombre maximum de participant.e.s est atteint ou la date limite d\'inscription est dépassée).');
         }
-    //TODO : éventuellement, rediriger vers la page du détail de la sortie en cas de susccès de l'inscription ?
         return $this->redirectToRoute('main_accueil');
     }
     #[Route('/sortie/desistement/{id}', name:'sortie_desistement', requirements: ['id' => '\d+'], methods: ["GET"])]
-    public function seDesister(
-        SortieRepository $sortieRepository,
-        int $id,
-        EntityManagerInterface $entityManager,
-        EventDispatcherInterface $dispatcher,
-    ):Response
+    public function seDesister(SortieRepository $sortieRepository,
+                               int $id,
+                               EntityManagerInterface $entityManager,
+                               EventDispatcherInterface $dispatcher):Response
     {
         $sortie = $sortieRepository->find($id);
         /** @var Participant $participant */
@@ -207,26 +202,26 @@ class SortieController extends AbstractController
                                    EntityManagerInterface $entityManager,
                                    EtatRepository $etatRepository): Response
     {
-
+        $nouvelleSortie = new Sortie();
         /**
          * @var Participant $participant
          * */
-
-        $nouvelSortie = new Sortie();
         $participant = $this->getUser();
-        $nouvelSortie->setOrganisateur($participant);
-        $nouvelSortie->setSiteOrganisateur($participant->getCampus());
-        $nouvelSortie->setEtat($etatRepository->findOneBy(['libelle'=>'Créée']));
-        $creationForm = $this->createForm(CreationSortieType::class, $nouvelSortie);
+        $nouvelleSortie->setOrganisateur($participant);
+        $nouvelleSortie->setSiteOrganisateur($participant->getCampus());
+        $nouvelleSortie->setEtat($etatRepository->findOneBy(['libelle'=>'Créée']));
+        $creationForm = $this->createForm(CreationSortieType::class, $nouvelleSortie);
         $creationForm-> handleRequest($request);
-
 
         if ($creationForm->isSubmitted() && $creationForm->isValid()){
 
-            $entityManager->persist($nouvelSortie);
+            $entityManager->persist($nouvelleSortie);
             $entityManager->flush();
-
-            $this->addFlash('success', 'votre sortie est enregistrée');
+            $this->addFlash('success', 'Votre sortie est enregistrée');
+            if($creationForm->get('saveAndAdd')->isClicked())
+            {
+                return  $this->redirectToRoute('sortie_publier', ['id'=>$nouvelleSortie->getId()]);
+            }
             return $this->redirectToRoute('main_accueil');
         }
 
@@ -235,9 +230,10 @@ class SortieController extends AbstractController
         ]);
     }
 
-    #[Route('/sorties/creation/ville/{id}', name:'sortie_getLieux_creation',  requirements: ['id' => '\d+'], methods: ["GET"])]
+    #[Route('/sorties/creation/ville/{idVille}', name:'sortie_getLieux_creation',  requirements: ['idVille' => '\d+'], methods: ["GET"])]
     #[Route('//sorties/modifier/{idSortie}/ville/{idVille}', name:'sortie_getLieux_modification',  requirements: ['idSortie' => '\d+', 'idVille'=>'\d+'], methods: ["GET"])]
-    public function getLieux(int $idVille, VilleRepository $villeRepository):Response
+    public function getLieux(int $idVille,
+                             VilleRepository $villeRepository):Response
     {
         $ville = $villeRepository->find($idVille);
         $lieux = $ville->getLieux();

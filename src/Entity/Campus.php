@@ -74,7 +74,6 @@ class Campus
                 $participant->setCampus(null);
             }
         }
-
         return $this;
     }
 
