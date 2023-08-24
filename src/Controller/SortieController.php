@@ -7,6 +7,7 @@ use App\Entity\Sortie;
 use App\Event\SortieEvent;
 use App\Form\AnnulerSortieType;
 use App\Form\CreationSortieType;
+use App\Form\ModifierSortieType;
 use App\Repository\EtatRepository;
 use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
@@ -65,10 +66,22 @@ class SortieController extends AbstractController
 
         $sortieAModifier = $sortieRepository->find($id);
         $ville = $sortieAModifier->getLieu()->getVille();
+        $modifierForm = $this->createForm(ModifierSortieType::class, $sortieAModifier, ['ville'=>$ville]) ;
 
-        $entityManager->persist($sortieAModifier);
-        $entityManager->flush();
-        $this ->addFlash('success', 'Votre sortie est bien modifier');
+        $modifierForm ->handleRequest($request);
+
+        if($modifierForm->isSubmitted() && $modifierForm->isValid()){
+
+            $entityManager->persist($sortieAModifier);
+            $entityManager->flush();
+            $this ->addFlash('success', 'Votre sortie est bien modifier');
+            return $this->redirectToRoute('main_accueil');
+        }else{
+            $this->addFlash('danger', 'La modification n\'est pas permise');
+        }
+        return $this->render('sortie/modifierSortie.html.twig',[
+                'modifierForm'=>$modifierForm->createView()
+            ]) ;
     }
 
     #[Route('/sorties/supprimer/{id}', name: 'sortie_supprimer', requirements: ['id' => '\d+'], methods: ['GET', 'DELETE'])]
@@ -90,12 +103,11 @@ class SortieController extends AbstractController
         return $this->redirectToRoute('main_accueil');
     }
     #[Route('/sorties/annuler/{id}', name: 'sortie_annuler', requirements: ['id' => '\d+'], methods: ['GET','POST'])]
-    public function annulerSortie(
-        Request $request,
-        int $id,
-        SortieRepository $sortieRepository,
-        EtatRepository $etatRepository,
-        EntityManagerInterface $entityManager): Response
+    public function annulerSortie(Request $request,
+                                    int $id,
+                                    SortieRepository $sortieRepository,
+                                    EtatRepository $etatRepository,
+                                    EntityManagerInterface $entityManager): Response
     {
         $sortie = $sortieRepository->find($id);
         $today = new \DateTime('now');
@@ -121,11 +133,10 @@ class SortieController extends AbstractController
         ]);
     }
     #[Route('/sortie/inscription/{id}', name: 'sortie_inscription', requirements: ['id' => '\d+'], methods: ["GET"])]
-    public function inscrire(
-        SortieRepository $sortieRepository,
-        int $id,
-        EntityManagerInterface $entityManager,
-        EventDispatcherInterface $dispatcher,
+    public function inscrire(SortieRepository $sortieRepository,
+                            int $id,
+                            EntityManagerInterface $entityManager,
+                            EventDispatcherInterface $dispatcher,
     ): Response
     {
         $sortie = $sortieRepository->find($id);

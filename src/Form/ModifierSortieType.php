@@ -76,8 +76,9 @@ class ModifierSortieType extends AbstractType
                 'choice_label'=>'nom',
                 'placeholder'=>'--Sélectionnez une ville--',
                 'choice_value'=> function (?Ville $ville){
-                    return $ville ? $ville->getId() : '';
-                }
+                    return $ville ? $ville->getId() : '' ;
+                },
+                'data'=> $options ['ville']
             ])
 
             ->add('lieu', EntityType::class,[
