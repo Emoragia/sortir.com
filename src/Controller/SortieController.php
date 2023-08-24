@@ -58,8 +58,17 @@ class SortieController extends AbstractController
     }
 
     #[Route('/sorties/modifier', name: 'sortie_modifier', methods: ['GET', 'POST'])]
-    public function modifierSortie(){
-        //TODO: renvoi vers une page modifier.html.twig
+    public function modifierSortie(Request $request,
+                                   SortieRepository $sortieRepository,
+                                   EntityManagerInterface $entityManager){
+        /**
+         * @var Ville $ville
+         **/
+        $ville = $this->getNom();
+
+        $entityManager->persist();
+        $entityManager->flush();
+        $this ->addFlash('success', 'Votre sortie est bien modifier');
     }
 
     #[Route('/sorties/supprimer/{id}', name: 'sortie_supprimer', requirements: ['id' => '\d+'], methods: ['GET', 'DELETE'])]
