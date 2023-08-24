@@ -5,8 +5,6 @@
     <h2 class="Title_Profil">{{ modifierForm.nom.vars.value }}</h2>
     {{ form_start(modifierForm) }}
     {{ form_widget(modifierForm) }}
-    <button id="btn-title-profil" type="submit" class="btn btn-primary">Enregistrer</button>
-    <a href="{{ path('sortie_publier', {'id': modifierForm.vars.data.id}) }}"  class="btn btn-primary">Publier</a>
     <a href="{{ path('sortie_supprimer', {'id':  modifierForm.vars.data.id}) }}" class="btn btn-primary">Supprimer</a>
     <a href="{{ path('main_accueil') }}" id="btn-title-profil" type="button" class="btn btn-primary">Annuler</a>
     {{ form_end(modifierForm) }}

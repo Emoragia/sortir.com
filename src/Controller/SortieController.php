@@ -76,6 +76,10 @@ class SortieController extends AbstractController
                $entityManager->persist($sortieAModifier);
                $entityManager->flush();
                $this ->addFlash('success', 'Votre sortie est bien modifier');
+               if($modifierForm->get('saveAndAdd')->isClicked())
+               {
+                   return  $this->redirectToRoute('sortie_publier', ['id'=>$sortieAModifier->getId()]);
+               }
                return $this->redirectToRoute('main_accueil');
            }
            catch (\Exception $e)
