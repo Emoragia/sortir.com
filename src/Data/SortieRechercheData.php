@@ -13,7 +13,7 @@ class SortieRechercheData
     public ?Campus $campus = null;
     #[Assert\Regex('/^\w+$/')]
     #[Assert\Length(
-        min: 10,
+        min: 6,
         max: 80,
         minMessage: 'Le nom recherché doit contenir au moins 6 caractères alphanumériques',
         maxMessage: 'le nom recherché ne peut pas contenir plus de 80 caractères.'
