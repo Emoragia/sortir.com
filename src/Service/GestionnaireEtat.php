@@ -23,40 +23,43 @@ class GestionnaireEtat
         //On vérifie si les sorties ouvertes doivent  être 'Clôturée' ou être enregistrée comme 'Activité en cours'
         if(!empty($sortiesOuvertes))
         {
+            $etat=$this->etatRepository->findOneBy(['libelle'=>'Clôturée']);
             foreach ($sortiesOuvertes as $sortie)
             {
-                    $sortie->setEtat($this->etatRepository->findOneBy(['libelle'=>'Clôturée']));
+                    $sortie->setEtat($etat);
                     $this->entityManager->persist($sortie);
-                    $this->entityManager->flush();
                     $compteur+=1;
             }
+            $this->entityManager->flush();
         }
         /** @var Sortie[] $sortiesCloturees */
         $sortiesCloturees = $this->sortieRepository->findSortiesByStateAndDate('Clôturée');
         //On vérifie si les sorties clôturées doivent être enregistrées en 'Activité en cours'
         if(!empty($sortiesCloturees))
         {
+            $etat=$this->etatRepository->findOneBy(['libelle'=>'Activité en cours']);
             foreach ($sortiesCloturees as $sortie)
             {
-                    $sortie->setEtat($this->etatRepository->findOneBy(['libelle'=>'Activité en cours']));
+                    $sortie->setEtat($etat);
                     $this->entityManager->persist($sortie);
-                    $this->entityManager->flush();
                     $compteur+=1;
             }
+            $this->entityManager->flush();
         }
         /** @var Sortie[] $sortiesEnCours */
         $sortiesEnCours = $this->sortieRepository->findSortiesByStateAndDate('Activité en cours');
         //On vérifie si les sorties en cours doivent être enregistrées comme 'Passées'
         if(!empty($sortiesEnCours))
         {
+            $etat=$this->etatRepository->findOneBy(['libelle'=>'Passée']);
             foreach ($sortiesEnCours as $sortie)
             {
-                    $sortie->setEtat($this->etatRepository->findOneBy(['libelle'=>'Passée']));
+                    $sortie->setEtat($etat);
                     $this->entityManager->persist($sortie);
-                    $this->entityManager->flush();
                     $compteur+=1;
 
             }
+            $this->entityManager->flush();
         }
         /** @var Sortie[] $sortiesPasseesAnnulees */
         $sortiesPassees = $this->sortieRepository->findSortiesByStateAndDate('Passée');
@@ -65,13 +68,14 @@ class GestionnaireEtat
         //On récupère  les sorties passées ou annulées dont la date de début prévue est ancienne d'au moins un mois (31 jours) pour les passer en état 'Archivée'
         if(!empty($sortiesPasseesAnnulees))
         {
+            $etat=$this->etatRepository->findOneBy(['libelle'=>'Archivée']);
             foreach ($sortiesPasseesAnnulees as $sortie)
             {
-                $sortie->setEtat($this->etatRepository->findOneBy(['libelle'=>'Archivée']));
+                $sortie->setEtat($etat);
                 $this->entityManager->persist($sortie);
-                $this->entityManager->flush();
                 $compteur+=1;
             }
+            $this->entityManager->flush();
         }
         return $compteur;
     }

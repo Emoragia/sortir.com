@@ -63,6 +63,7 @@ class SortieController extends AbstractController
     {
 
         $sortieAModifier = $sortieRepository->find($id);
+        //TODO: Ajouter structure de contrôle : a-t-on récupéré une sortie ?+ vérifer les droits de l'utilisateur : ROLE + participant = organisateur ?
         $ville = $sortieAModifier->getLieu()->getVille();
         $modifierForm = $this->createForm(ModifierSortieType::class, $sortieAModifier, ['ville'=>$ville]) ;
 
@@ -96,6 +97,7 @@ class SortieController extends AbstractController
                                     EntityManagerInterface $entityManager): Response
     {
         $sortie = $sortieRepository->find($id);
+        //TODO : verifier qui est l'utisateur.ice : est-il bien l'organisateur.ice de la sortie.
         if($sortie->getEtat()->getLibelle() == 'Créée')
         {
             $entityManager->remove($sortie);
