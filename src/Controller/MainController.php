@@ -27,7 +27,21 @@ class MainController extends AbstractController
         $data = new SortieRechercheData($participant);
         $rechercheForm = $this->createForm(SortieRechercheDataType::class, $data);
         $rechercheForm->handleRequest($request);
-        $sorties = $sortieRepository->findSorties($data);
+        //Si premier chargement de la page / pas d'utilisation de la fonction de tri
+        if(!$rechercheForm->isSubmitted())
+        {
+            $sorties = $sortieRepository->findSorties($data);
+        }
+        //Si utilisation du formulaire de tri
+        if($rechercheForm->isSubmitted() && $rechercheForm->isValid())
+        {
+            $sorties = $sortieRepository->findSorties($data);
+        }
+        else
+        {
+            $data = new SortieRechercheData($participant);
+            $sorties = $sortieRepository->findSorties($data);
+        }
         return $this->render('main/accueil.html.twig', [
                'rechercheForm'=> $rechercheForm->createView(),
                'sorties'=>$sorties

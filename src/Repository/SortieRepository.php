@@ -45,7 +45,7 @@ class SortieRepository extends ServiceEntityRepository
         //Sélection par nom:
         if($data->nomRecherche)
         {
-            $queryBuilder->andWhere('s.nom LIKE :mot')
+            $queryBuilder->andWhere('LOWER(s.nom) LIKE LOWER(:mot)')
                 ->setParameter('mot', '%'.$data->nomRecherche.'%');
         }
 
