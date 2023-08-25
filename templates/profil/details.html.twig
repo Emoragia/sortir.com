@@ -3,26 +3,26 @@
 {% block title %}Profil{% endblock %}
 
 {% block body %}
-<div class="container mx-auto p-5" style="width: 50%">
-  <div class="card text-center shadow">
-    <div class="row">
-      <div class="col-md-4 align-self-center">
-        <img src="{{ asset('images/user.png') }}" class="rounded-start" alt="logo_user " style="width: 210px">
-      </div>
-      <div class="col-md-8">
-        <div class="card-body">
-          <h5 class="card-title">{{ profilConsulte.pseudo }}</h5>
-          <p> <strong>Prénom : </strong>{{ profilConsulte.prenom }}</p>
-          <p><strong>Nom : </strong>{{ profilConsulte.nom }}</p>
-          {% if(profilConsulte.telephone) %}
-            <p><strong>Téléphone : </strong>{{ profilConsulte.telephone }}</p>
-          {% endif %}
-          <p><strong>Email : </strong>{{ profilConsulte.email }}</p>
-          <p><strong>Campus : </strong>{{ profilConsulte.campus.nom }}</p>
-          <a href="{{ path('main_accueil') }}"><button type="button" style="width: 20%;">Retour</button></a>
+  <body>
+    <div class="container mx-auto p-5" style="background-image: url('images/image2.jpg')">
+        <div class="row">
+          <div class="col-md-4 ">
+            <img src="{{ asset('images/user.png') }}" class="rounded-start" alt="logo_user " style="width: 210px">
+          </div>
+          <div class="col-md-8">
+            <div class="w-25 text-center">
+              <h5 class="card-title">{{ profilConsulte.pseudo }}</h5>
+              <p>Prénom : {{ profilConsulte.prenom }}</p>
+              <p>Nom : {{ profilConsulte.nom }}</p>
+              {% if(profilConsulte.telephone) %}
+                <p>Téléphone : {{ profilConsulte.telephone }}</p>
+              {% endif %}
+              <p>Email : { profilConsulte.email }}</p>
+              <p>Campus : {{ profilConsulte.campus.nom }}</p>
+              <a href="{{ path('main_accueil') }}"><button type="button" style="width: 20%;">Retour</button></a>
+            </div>
+          </div>
         </div>
-      </div>
     </div>
-  </div>
-</div>
+  </body>
 {% endblock %}

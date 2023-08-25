@@ -4,12 +4,12 @@
 
 {% block body %}
 
-<h2 class="text-center">{{ app.user.pseudo}}</h2>
-    {{ form_start(profilForm) }}
-      {{ form_widget(profilForm) }}
-      <button id="btn-title-profil" type="submit" class="btn btn-primary">Enregistrer</button>
-      {{ form_end(profilForm) }}
-
-
+    <div style="background-image: url('images/image2.jpg')">
+        <h2 class="text-center">{{ app.user.pseudo}}</h2>
+        {{ form_start(profilForm) }}
+        {{ form_widget(profilForm) }}
+        <button id="btn-title-profil" type="submit" class="btn btn-primary">Enregistrer</button>
+        {{ form_end(profilForm) }}
+    </div>
 
 {% endblock %}

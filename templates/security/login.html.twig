@@ -13,9 +13,9 @@
             Vous êtes connecté en tant que {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
         </div>
     {% endif %}
-    <div class="container_form_position">
-        <div class="container_form_login">
-            <h1 class="h3 mb-3 font-weight-normal">Connexion</h1>
+    <div class="card w-25 m-auto">
+        <div class="card-body text-center">
+            <h1 class=" card-title h3 mb-3 font-weight-normal">Connexion</h1>
             <label for="inputUsername">Identifiant</label>
             <input type="text" value="{{ last_username }}" name="pseudo" id="inputUsername" class="form-control" autocomplete="pseudo" required autofocus>
             <label for="inputPassword">Mot de passe</label>

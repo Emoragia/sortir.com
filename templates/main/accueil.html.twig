@@ -3,8 +3,6 @@
 {% block title %}Accueil !{% endblock %}
 
 {% block body %}
-
-<body>
     <div class="container_participant_accueil">
         <p>Date du jour : {{ "now" | date('d/m/y') }}</p>
         <p>Bienvenue {{ app.user.pseudo }} !</p>
@@ -86,5 +84,4 @@
         </tbody>
     </table>
         <a href="{{ path('sortie_creation') }}" class="btn btn-primary" style="margin-left:1%">Créer une sortie</a>
-</body>
 {% endblock %}
