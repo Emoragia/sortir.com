@@ -4,12 +4,32 @@
 
 {% block body %}
 
-    <div style="background-image: url('images/image2.jpg')">
-        <h2 class="text-center">{{ app.user.pseudo}}</h2>
-        {{ form_start(profilForm) }}
-        {{ form_widget(profilForm) }}
-        <button id="btn-title-profil" type="submit" class="btn btn-primary">Enregistrer</button>
-        {{ form_end(profilForm) }}
+    <div class="container m-auto">
+        <div class="row m-5">
+            <div class="card shadow bg-light bg-gradient p-5">
+                <h2 class="card-title text-center">{{ app.user.pseudo}}</h2>
+                <div class="card-body p-5">
+                    <div class="d-flex flex-row justify-content-center">
+                        <div class="p-4">
+                            {{ form_start(profilForm) }}
+                            {{ form_row(profilForm.pseudo) }}
+                            {{ form_row(profilForm.prenom) }}
+                            {{ form_row(profilForm.nom) }}
+                            {{ form_row(profilForm.telephone) }}
+                        </div>
+                        <div class="p-4">
+                            {{ form_row(profilForm.email) }}
+                            {{ form_row(profilForm.motPasseClair) }}
+                            {{ form_row(profilForm.campus) }}
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button id="btn-title-profil" type="submit" class="btn btn-primary btn-lg">Enregistrer</button>
+                        {{ form_end(profilForm) }}
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 {% endblock %}

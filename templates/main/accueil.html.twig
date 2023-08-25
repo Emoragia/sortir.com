@@ -4,8 +4,8 @@
 
 {% block body %}
     <div class="d-flex flex-column align-items-end m-3">
-        <p class="font-weight-bold">Date du jour : {{ "now" | date('d/m/y') }}</p>
-        <p class="font-weight-bold">Bienvenue {{ app.user.pseudo }} !</p>
+        <p class="font-weight-bold"><strong>Date du jour : {{ "now" | date('d/m/y') }}</strong></p>
+        <p class="font-weight-bold"><strong>Bienvenue {{ app.user.pseudo }} !</strong></p>
     </div>
     <div class="card shadow-sm m-3">
         <div class="card-body">
@@ -83,5 +83,5 @@
         {% endfor %}
         </tbody>
     </table>
-        <a href="{{ path('sortie_creation') }}" class="btn btn-primary" style="margin-left:1%">Créer une sortie</a>
+        <a href="{{ path('sortie_creation') }}" class="btn btn-primary btn-lg" style="margin-left:1%">Créer une sortie</a>
 {% endblock %}
